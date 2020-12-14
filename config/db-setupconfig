@@ -1,0 +1,47 @@
+MYSQL
+
+NAZWA BAZY: eduinfo
+NAZWA TABELI: schools
+
+nazwy kolumn i typy:
+
+id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY [numer porzadkowy]
+voivodeship VARCHAR(50) [wojewodztwo]
+county      VARCHAR(50) [powiat]
+community   VARCHAR(50) [gmina]
+type        VARCHAR(50) [typ placowki]
+name        VARCHAR(200) [nazwa placówki]
+street      VARCHAR(50) [ulica]
+houseNumber VARCHAR(10) [numer budynku]
+postalCode  VARCHAR(50) [kod pocztowy]
+phoneNumber VARCHAR(50) [numer telefonu]
+website VARCHAR(100) [strona internetowa]
+students INT [ilosc uczniów]
+branches INT [ilosc odziałów]
+email VARCHAR(100) [email]
+
+logging.level.org.springframework=ERROR
+spring.datasource.url=jdbc:mysql://localhost:3306/eduinfo?allowPublicKeyRetrieval=TRUE&useSSL=false
+spring.datasource.username=xxxxxxx
+spring.datasource.password=xxxxxxxxxxx
+
+
+
+CREATE TABLE schools (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	voivodeship VARCHAR(50),
+	county      VARCHAR(50),
+	community   VARCHAR(50),
+	type        VARCHAR(50),
+	name        VARCHAR(200),
+	street      VARCHAR(50),
+	houseNumber VARCHAR(10),
+	postalCode  VARCHAR(50),
+	phoneNumber VARCHAR(50),
+	website VARCHAR(100),
+	students INT,
+	branches INT,
+	email VARCHAR(100)
+);
+
+INSERT INTO schools VALUES(1,"Mazowieckie","Warszawa","Warszawa","Liceum","Staszica","Al.Ujazdowskie","20D","00-420","123456789","www.jestesmynajlepsi.pl",12,10,"migmail@migmail.com");
