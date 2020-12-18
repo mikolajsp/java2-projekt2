@@ -1,3 +1,9 @@
+coordsScript/src/Secrets.java
+coordsScript/.idea
+coordsScript/out
+coordsScript/data*
+coordsScript/coords*.*
+coordsScript/.vscode
 config/coordsScript/src/Secrets.java
 config/coordsScript/.idea
 config/coordsScript/out
