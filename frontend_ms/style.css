@@ -1,0 +1,11 @@
+.school{
+    border-style: solid;
+    border-radius: 25px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+#mapid {
+    height: 200px;
+    width: 400px;
+}
