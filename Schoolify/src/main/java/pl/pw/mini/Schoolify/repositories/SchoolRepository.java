@@ -1,9 +1,9 @@
 package pl.pw.mini.Schoolify.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 import pl.pw.mini.Schoolify.modules.School;
+
 
 public interface SchoolRepository extends JpaRepository<School,Long>{
 	School findByName(String name);

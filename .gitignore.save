@@ -4,4 +4,5 @@ config/coordsScript/out
 config/coordsScript/data*
 config/coordsScript/coords*.*
 config/coordsScript/.vscode
-Schoolify/src/main/java/pl/pw/mini/Schoolify/modules/Secret.java
+Schoolify/src/main/java/pl/pw/mini/Schoolify/modules
+/Secret.java

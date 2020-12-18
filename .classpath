@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="config/coordsScript/src"/>
+	<classpathentry kind="src" path="Schoolify/.mvn/wrapper"/>
+	<classpathentry kind="src" path="Schoolify/src/main/java"/>
+	<classpathentry kind="src" path="Schoolify/src/test/java"/>
+	<classpathentry kind="lib" path="config/coordsScript/lib/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="config/coordsScript/lib/mysql-connector-java-8.0.22.jar"/>
+	<classpathentry kind="output" path="Schoolify/target/classes"/>
+</classpath>

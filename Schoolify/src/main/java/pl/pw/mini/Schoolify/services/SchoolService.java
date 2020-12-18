@@ -1,11 +1,14 @@
 package pl.pw.mini.Schoolify.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.pw.mini.Schoolify.modules.PositionFinder;
 import pl.pw.mini.Schoolify.modules.School;
 import pl.pw.mini.Schoolify.repositories.SchoolRepository;
 
@@ -16,7 +19,7 @@ public class SchoolService {
 	SchoolRepository sr;
 	
 	
-	public List<School> simpleFilterSchools(Map<String,String> allFilters){
+	public List<School> simpleFilter(Map<String,String> allFilters){
 		List<School> res;
 		String name,type,town;
 		if(allFilters.containsKey("name")){
@@ -58,54 +61,52 @@ public class SchoolService {
 		return res;
 		}
 	
-	public List<School> advancedFilterSchools(Map<String,String> allFilters){
-		List<School> res = simpleFilterSchools(allFilters);
-		List<School> pom;
-		for(String key:allFilters.keySet()){
-			switch(key) 
-			{
-			case "studlower":
-				int ls = Integer.parseInt(allFilters.get("studlower"));
-				pom = sr.findByStudentsGreaterThanEqual(ls);
-				res.retainAll(pom);
-				break;
-			case "studupper":
-				int us = Integer.parseInt(allFilters.get("studupper"));
-				pom = sr.findByStudentsLessThanEqual(us);
-				res.retainAll(pom);
-				break;
-			case "branlower":
-				int bl = Integer.parseInt(allFilters.get("branlower"));
-				pom = sr.findByBranchesGreaterThanEqual(bl);
-				res.retainAll(pom);
-				break;
-			case "branupper":
-				int bu = Integer.parseInt(allFilters.get("branupper"));
-				pom = sr.findByBranchesLessThanEqual(bu);
-				res.retainAll(pom);
-				break;
-			case "voivodeship":
-				pom = sr.findByLocalizationVoivodeship(allFilters.get("voivodeship"));
-				res.retainAll(pom);
-				break;
-			case "county":
-				pom = sr.findByLocalizationCounty(allFilters.get("county"));
-				res.retainAll(pom);
-				break;
-			case "community":
-				pom = sr.findByLocalizationCommunity(allFilters.get("community"));
-				res.retainAll(pom);
-				break;
+	public List<School> advancedFilter(Map<String,String> allFilters){
+		List <School> res = simpleFilter(allFilters);
+		int ls = Integer.parseInt(allFilters.getOrDefault("studlower", "-1"));
+		int us = Integer.parseInt(allFilters.getOrDefault("studupper", "10000"));
+		int bl = Integer.parseInt(allFilters.getOrDefault("branlower", "-1"));
+		int bu = Integer.parseInt(allFilters.getOrDefault("branupper", "10000"));
+		String voi = allFilters.getOrDefault("voivodeship","");
+		String county = allFilters.getOrDefault("county","");
+		String comm = allFilters.getOrDefault("community","");
+		List<School> ret = res.stream().filter(s -> us >= s.getStudents() && s.getStudents() >= ls).filter(
+					s-> s.getBranches() >= bl && bu >= s.getBranches()).filter(
+							s -> s.getLocalization().getVoivodeship().startsWith(voi)
+							).filter(
+									s -> s.getLocalization().getCounty().startsWith(county)
+									).filter(s -> s.getLocalization().getCommunity().startsWith(comm)).collect(Collectors.toList());
+		List<School> fin;
+		if(allFilters.containsKey("origin")) {
+			String or = allFilters.get("origin");
+			int dist = Integer.parseInt(allFilters.get("distance"));
+			Double[] coors = PositionFinder.findLonLat(or);
+			fin = new ArrayList<>();
+			for(School s: ret){
+				double x = s.calculateDistance(coors[0], coors[1]);
+				if(x < 1000*dist){
+					fin.add(s);
+				}
 			}
+			
+		}else {
+			return ret;
+		}
+		
+		return fin;
+				
 	}
-		return res;
-	}
+
 	public School findById(Long id) {
-		return this.sr.findById(id).orElse(null);
+		return sr.findById(id).orElse(null);
 	}
 	public School findByName(String name) {
 		return this.sr.findByName(name);
 	}
+	
+	
+	
+	
 	
 	
 	

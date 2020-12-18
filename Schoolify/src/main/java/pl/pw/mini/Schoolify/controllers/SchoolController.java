@@ -17,7 +17,7 @@ public class SchoolController {
 	
 	@Autowired
 	SchoolService ss;
-	
+
 	@GetMapping("id/{id}")
 	public ResponseEntity<School> schoolById(@PathVariable("id") Long id) {
 		School sch = ss.findById(id);

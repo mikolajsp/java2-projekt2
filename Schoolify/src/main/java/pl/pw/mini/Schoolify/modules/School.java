@@ -24,6 +24,7 @@ public class School{
 	@JsonUnwrapped
 	private Contact contact;
 	
+
 	@Embedded
 	@JsonUnwrapped
 	private Localization localization;
@@ -62,6 +63,39 @@ public class School{
 	public void setBranches(int branches) {
 		this.branches = branches;
 	}
+	public Contact getContact() {
+		return contact;
+	}
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+	public Localization getLocalization() {
+		return localization;
+	}
+	public void setLocalization(Localization localization) {
+		this.localization = localization;
+	}
+	// haversine formula
+	public double calculateDistance(double lon,double lat) {
+		int R = 6370000; // earth radius
+		double pom = Math.PI/180;
+		double ph1 = lat * pom ;
+		double ph2 = localization.getLat() * pom;
+		double deltaphi = (localization.getLat() - lat) * pom;
+		double deltalambda = (localization.getLon()-lon) * pom;
+		double a = Math.sin(deltaphi/2) * Math.sin(deltaphi/2) +
+		          Math.cos(ph1) * Math.cos(ph2) *
+		          Math.sin(deltalambda/2) * Math.sin(deltalambda/2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		return  R * c;
+	}
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public String toString() {
 		return "School [id=" + id + ", type=" + type + ", name=" + name + ", students=" + students + ", branches="

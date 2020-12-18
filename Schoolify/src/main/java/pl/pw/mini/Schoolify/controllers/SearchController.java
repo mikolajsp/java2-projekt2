@@ -22,15 +22,16 @@ public class SearchController{
 	SchoolService ss;
 	
 
+	@SuppressWarnings("unlikely-arg-type")
 	@GetMapping("/search")
-	public ResponseEntity<List<School>> fsearch(@RequestParam Map<String,String> allFilters){
+	public ResponseEntity<List<School>> search(@RequestParam Map<String,String> allFilters){
 		String[] simple = {"town","name","type"};
 		List<School> res;
 		Set<String> simple_filters = new HashSet<String>(Arrays.asList(simple));
 		if(simple_filters.contains(allFilters)){
-			res = ss.simpleFilterSchools(allFilters);
+			res = ss.simpleFilter(allFilters);
 		}else {
-			res = ss.advancedFilterSchools(allFilters);
+			res = ss.advancedFilter(allFilters);
 		}
 		return ResponseEntity.ok(res);
 	}
