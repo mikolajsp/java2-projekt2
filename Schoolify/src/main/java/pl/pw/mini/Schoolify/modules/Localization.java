@@ -1,15 +1,14 @@
 package pl.pw.mini.Schoolify.modules;
 
-import java.io.Serializable;
-
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Embeddable
-public class Localization implements Serializable {
-	@Transient 
-	private static final long serialVersionUID = 1L;
+public class Localization {
+	
 	
 	private String voivodeship;
 	private String county;
@@ -17,8 +16,8 @@ public class Localization implements Serializable {
 	private String street;
 	private String houseNumber;
 	private String postalCode;
-	private Double longitude;
-	private Double latitude;
+	private Double lon;
+	private Double lat;
 	private String town;
 	
 	
@@ -29,17 +28,36 @@ public class Localization implements Serializable {
 		this.town = town;
 	}
 
+
 	public Localization(String voivodeship, String county, String community, String street, String houseNumber,
-			String postalCode, Double longitude, Double latitude, String town) {
+			String postalCode, Double lon, Double lat, String town) {
 		this.voivodeship = voivodeship;
 		this.county = county;
 		this.community = community;
 		this.street = street;
 		this.houseNumber = houseNumber;
 		this.postalCode = postalCode;
-		this.longitude = longitude;
-		this.latitude = latitude;
+		this.lon = lon;
+		this.lat = lat;
 		this.town = town;
+	}
+	@Override
+	public String toString() {
+		return "Localization [voivodeship=" + voivodeship + ", county=" + county + ", community=" + community
+				+ ", street=" + street + ", houseNumber=" + houseNumber + ", postalCode=" + postalCode + ", lon=" + lon
+				+ ", lat=" + lat + ", town=" + town + "]";
+	}
+	public Double getLon() {
+		return lon;
+	}
+	public void setLon(Double lon) {
+		this.lon = lon;
+	}
+	public Double getLat() {
+		return lat;
+	}
+	public void setLat(Double lat) {
+		this.lat = lat;
 	}
 	public Localization() {}
 	public String getVoivodeship() {
@@ -77,24 +95,6 @@ public class Localization implements Serializable {
 	}
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
-	}
-	public double getLongitude() {
-		return longitude;
-	}
-	public void setLongitude(Double longitude) {
-		this.longitude = longitude;
-	}
-	public double getLatitude() {
-		return latitude;
-	}
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
-	}
-	@Override
-	public String toString() {
-		return "Localization [voivodeship=" + voivodeship + ", county=" + county + ", community=" + community
-				+ ", street=" + street + ", houseNumber=" + houseNumber + ", postalCode=" + postalCode + ", longitude="
-				+ longitude + ", latitude=" + latitude + ", town=" + town + "]";
 	}
 
 

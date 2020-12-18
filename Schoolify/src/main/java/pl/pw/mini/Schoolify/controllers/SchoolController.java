@@ -1,30 +1,32 @@
 package pl.pw.mini.Schoolify.controllers;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.pw.mini.Schoolify.modules.School;
-import pl.pw.mini.Schoolify.repositories.SchoolRepository;
-
-// Kontroler odpowiadający za zwracanie pojedynczej szkoły.
+import pl.pw.mini.Schoolify.services.SchoolService;
 
 @RestController
+@RequestMapping("/school")
 public class SchoolController {
 	
 	@Autowired
-	SchoolRepository sr;
+	SchoolService ss;
 	
-	@GetMapping("school/id/{id}")
-	public School schoolById(@PathVariable String id) {
-		return sr.findById(Long.parseLong(id)).orElse(null);
+	@GetMapping("id/{id}")
+	public ResponseEntity<School> schoolById(@PathVariable("id") Long id) {
+		School sch = ss.findById(id);
+		return ResponseEntity.ok(sch);
 	}
-	@GetMapping("school/name/{name}")
-	public School schoolByName(@PathVariable String name) {
-		return sr.findByName(name);
+	@GetMapping("name/{name}")
+	public ResponseEntity<School> schoolByName(@PathVariable("name") String name) {
+		School sch = ss.findByName(name);
+		return ResponseEntity.ok(sch);
 	}
 		
 }
