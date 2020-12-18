@@ -1,5 +1,13 @@
 # Projekt dotyczący wyszukiwania szkół
 
+Bardzo pobieżny opis struktury projektu:
+- W folderze `Schoolify` znajduje się główna część naszego projektu = aplikacja serwerowa w Spring Boot.
+- W folderze `dbSetup` znajduje się tabela oraz skrypt na podstawie którego można wygenerować bazę danych do której się odwołujemy z serwera.
+- W folderze `coordsScript` znajduje się skrypt (w Javie) który posłużył nam do wygenerowana współrzędnych geograficznych szkół na podstawie adresów. (Na razie bardzo nieperfekcyjne, będziemy próbować jeszcze raz)
+- W folderze `frontend` znajduje się bardzo wstępny prototyp frontendu do interakcji z serwerem.  
+
+
+
 ## Funkcjonalności systemu
 
 1. ~~Stworzenie bazy danych na podstawie arkusza Excel udostępnionego przez Ministerstwo Edukacji.~~
