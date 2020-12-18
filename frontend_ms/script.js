@@ -1,7 +1,17 @@
+var mymap = L.map('mapid').setView([52, 18], 5);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(mymap);
+var markers = L.layerGroup();
+
 function execute(){
 
     document.getElementById("response").innerHTML = "";
 
+    markers.clearLayers();
+
+
+   
     var town = document.getElementById("itown").value;
     var name = document.getElementById("iname").value;
     var type = document.getElementById("itype").value;
@@ -31,10 +41,11 @@ function execute(){
     
     
     var content = JSON.parse(xmlHttp.responseText);
-
+    
     console.log(content);
 
     for (var school in content){
+        var marker = L.marker([content[school].lat, content[school].lon]).addTo(markers);
         var newElement = document.createElement('div');
         newElement.id = content[school].id;
         newElement.className = "school";
@@ -54,5 +65,6 @@ function execute(){
         document.getElementById("response").appendChild(newElement);
     }
 
+    mymap.addLayer(markers);
 
 }
