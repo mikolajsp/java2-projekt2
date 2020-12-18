@@ -1,6 +1,5 @@
 package pl.pw.mini.Schoolify.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,21 +16,54 @@ public class SchoolService {
 	SchoolRepository sr;
 	
 	
-	public List<School> filterSchools(Map<String,String> allFilters){
-//		long start = System.currentTimeMillis();
-		List<School> res = sr.findAll();
-		List<School> pom = new ArrayList<>();
+	public List<School> simpleFilterSchools(Map<String,String> allFilters){
+		List<School> res;
+		String name,type,town;
+		if(allFilters.containsKey("name")){
+			name = allFilters.get("name");
+			if(allFilters.containsKey("town")) {
+				town = allFilters.get("town");
+				if(allFilters.containsKey("type")){
+					type = allFilters.get("type");
+					res = sr.findByNameStartingWithAndTypeAndLocalizationTown(name, type, town);
+				}else {
+					res = sr.findByNameStartingWithAndType(name,town);
+				}
+			}else {
+				if(allFilters.containsKey("type")){
+					type = allFilters.get("type");
+					res = sr.findByNameStartingWithAndType(name, type);
+				}else {
+					res = sr.findByNameStartingWith(name);
+				}
+			}
+		}else{
+			if(allFilters.containsKey("town")){
+				town = allFilters.get("town");
+				if(allFilters.containsKey("type")){
+					type = allFilters.get("type");
+					res = sr.findByTypeAndLocalizationTown(type, town);
+				}else {
+					res = sr.findByLocalizationTown(town);
+				}
+			}else {
+				if(allFilters.containsKey("type")){
+					type = allFilters.get("type");
+					res = sr.findByType(type);
+				}else {
+					res = sr.findAll();
+				}
+			}
+		}
+		return res;
+		}
+	
+	public List<School> advancedFilterSchools(Map<String,String> allFilters){
+		List<School> res = simpleFilterSchools(allFilters);
+		List<School> pom;
 		for(String key:allFilters.keySet()){
 			switch(key) 
 			{
-			case "name":
-				pom = sr.findByNameStartingWith(allFilters.get("name"));
-				res.retainAll(pom);
-				break;
-			case "type":
-				pom = sr.findByType(allFilters.get("type")); 
-				res.retainAll(pom);
-				break;
 			case "studlower":
 				int ls = Integer.parseInt(allFilters.get("studlower"));
 				pom = sr.findByStudentsGreaterThanEqual(ls);
@@ -64,18 +96,10 @@ public class SchoolService {
 				pom = sr.findByLocalizationCommunity(allFilters.get("community"));
 				res.retainAll(pom);
 				break;
-			case "town":
-				pom = sr.findByLocalizationTown(allFilters.get("town"));
-				res.retainAll(pom);
-				break;
 			}
-		}
-//		long fin = System.currentTimeMillis();
-//		System.out.println(fin-start); for adwanced quieries it may take up to 7seconds TODO: fix it!
+	}
 		return res;
-		}
-	
-	
+	}
 	public School findById(Long id) {
 		return this.sr.findById(id).orElse(null);
 	}
