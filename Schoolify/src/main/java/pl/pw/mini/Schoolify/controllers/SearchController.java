@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +22,12 @@ public class SearchController{
 	@Autowired
 	SchoolService ss;
 	
+<<<<<<< HEAD
 
 	@SuppressWarnings("unlikely-arg-type")
+=======
+	@CrossOrigin
+>>>>>>> a70b4e78832b66055413560f8b7df30e3bcca207
 	@GetMapping("/search")
 	public ResponseEntity<List<School>> search(@RequestParam Map<String,String> allFilters){
 		String[] simple = {"town","name","type"};
