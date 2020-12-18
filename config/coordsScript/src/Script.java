@@ -15,7 +15,7 @@ public class Script {
         String user = Secrets.user;
         String password = Secrets.password;
 
-        String query = "SELECT id, postalCode, town, street, houseNumber from Schools where id > 49406;";
+        String query = "SELECT id, postalCode, town, street, houseNumber from Schools;";
 
         var apikey = Secrets.apikey;
         HttpClient client = HttpClient.newHttpClient();
