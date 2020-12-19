@@ -6,14 +6,8 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(mymap);
 var markers = L.layerGroup();
 
-function execute(){
+function createRequestURI() {
 
-    document.getElementById("response").innerHTML = "";
-
-    markers.clearLayers();
-
-
-   
     var town = document.getElementById("itown").value;
     var name = document.getElementById("iname").value;
     var type = document.getElementById("itype").value;
@@ -27,101 +21,125 @@ function execute(){
     var origin = document.getElementById("origin").value;
     var distance = document.getElementById("distance").value;
 
+    var base = "http://localhost:8080/search?";
 
-    var url = "http://localhost:8080/search?";
-
-    if(town){
+    if (town) {
         var key = encodeURIComponent("town");
         var value = encodeURIComponent(town);
-        url += key + "=" + value + "&";
+        base += key + "=" + value + "&";
     }
-    if(name){
+    if (name) {
         var key = encodeURIComponent("name");
         var value = encodeURIComponent(name);
-        url += key + "=" + value + "&";
+        base += key + "=" + value + "&";
     }
-    if(type){
-        if(type == "Dowolna"){}
-        else{
-        var key = encodeURIComponent("type");
-        var value = encodeURIComponent(type);
-        url += key + "=" + value + "&";
+    if (type) {
+        if (type == "Dowolna") { }
+        else {
+            var key = encodeURIComponent("type");
+            var value = encodeURIComponent(type);
+            base += key + "=" + value + "&";
         }
     }
-    if(studlower || studupper){
+    if (studlower || studupper) {
         var key1 = encodeURIComponent("studlower");
         var value1 = encodeURIComponent(studlower);
         var key2 = encodeURIComponent("studupper");
         var value2 = encodeURIComponent(studupper);
-        url += key1 + "=" + value1 +"&" + key2 + "=" + value2 +"&";
+        base += key1 + "=" + value1 + "&" + key2 + "=" + value2 + "&";
     }
-    if(branlower || branupper){
+    if (branlower || branupper) {
         var key1 = encodeURIComponent("branlower");
         var value1 = encodeURIComponent(branlower);
         var key2 = encodeURIComponent("branupper");
         var value2 = encodeURIComponent(branupper);
-        url += key1 + "=" + value1 +"&" + key2 + "=" + value2 +"&";
+        base += key1 + "=" + value1 + "&" + key2 + "=" + value2 + "&";
     }
-    if(voivodeship){
-        if(voivodeship=="Dowolne"){}
-        else{
+    if (voivodeship) {
+        if (voivodeship == "Dowolne") { }
+        else {
             var key = encodeURIComponent("voivodeship");
             var value = encodeURIComponent(voivodeship);
-            url += key + "=" + value + "&";
+            base += key + "=" + value + "&";
         }
     }
-    if(county){
+    if (county) {
         var key = encodeURIComponent("county");
         var value = encodeURIComponent(county);
-        url += key + "=" + value + "&";
+        base += key + "=" + value + "&";
     }
-    if(community){
+    if (community) {
         var key = encodeURIComponent("community");
         var value = encodeURIComponent(community);
-        url += key + "=" + value + "&";
+        base += key + "=" + value + "&";
     }
-    if (distance){
+    if (distance) {
         var key1 = encodeURIComponent("distance");
         var value1 = encodeURIComponent(distance);
         var key2 = encodeURIComponent("origin");
         var value2 = encodeURIComponent(origin);
-        url += key1 + "=" + value1 +"&" + key2 + "=" + value2 +"&";
+        base += key1 + "=" + value1 + "&" + key2 + "=" + value2 + "&";
     }
-    
 
+    return base;
+}
+
+function requestSchoolList(url) {
     var xmlHttp = new XMLHttpRequest();
-
+    url = createRequestURI();
     xmlHttp.open("GET", url, false);
     xmlHttp.send(null);
-    
-    
     var content = JSON.parse(xmlHttp.responseText);
-    
-    console.log(content);
+    return content;
+}
 
-    for (var school in content){
-        var marker = L.circleMarker([content[school].lat, content[school].lon], {
-            radius: 7
-        }).addTo(markers);
+
+function createSchoolDescription(school) {
+    return "Typ: " + school.type + "<br>" +
+        "Nazwa: " + school.name + "<br>" +
+        "Województwo: " + school.voivodeship + "<br>" +
+        "Powiat: " + school.county + "<br>" +
+        "Gmina: " + school.community + "<br>" +
+        "Liczba oddziałów: " + school.branches + "<br>" +
+        "Liczba uczniów: " + school.voivodeship + "<br>" +
+        "Email: " + school.email + "<br>" +
+        "Telefon: " + school.phoneNumber + "<br>" +
+        "Strona internetowa: <a href=\"" + school.website + "\">" + school.website + "</a>" + "<br>" +
+        "Adres: " + school.street + " " + school.houseNumber + ", " + school.town + "<br><br>";
+}
+
+
+function fillResponseDiv(schoolArray) {
+    for (var school in schoolArray) {
         var newElement = document.createElement('div');
-        newElement.id = content[school].id;
+        newElement.id = schoolArray[school].id;
         newElement.className = "school";
-        newElement.innerHTML = 
-        "Typ: " + content[school].type + "<br>" +
-        "Nazwa: " + content[school].name + "<br>" +
-        "Województwo: " + content[school].voivodeship + "<br>" +
-        "Powiat: " + content[school].county + "<br>" +
-        "Gmina: " + content[school].community + "<br>" +
-        "Liczba oddziałów: " + content[school].branches + "<br>" +
-        "Liczba uczniów: " + content[school].voivodeship + "<br>" +
-        "Email: " + content[school].email + "<br>" +
-        "Telefon: " + content[school].phoneNumber + "<br>" +
-        "Strona internetowa: <a href=\"" + content[school].website + "\">" + content[school].website + "</a>" + "<br>" +
-        "Adres: " + content[school].street + " " + content[school].houseNumber + ", " + content[school].town + "<br><br>";
-
+        newElement.innerHTML = createSchoolDescription(schoolArray[school]);
         document.getElementById("response").appendChild(newElement);
     }
 
+}
+
+function placeMarkersOnMap(schoolArray) {
+    schoolArray.forEach(element => {
+        var marker = L.circleMarker([element.lat, element.lon], {
+            radius: 7
+        }).addTo(markers);
+        var text = createSchoolDescription(element);
+        marker.bindPopup(text);
+    });
     mymap.addLayer(markers);
+}
+
+function execute() {
+
+    document.getElementById("response").innerHTML = "";
+
+    markers.clearLayers();
+    content = requestSchoolList();
+    console.log(content);
+
+    fillResponseDiv(content);
+    placeMarkersOnMap(content);
 
 }
