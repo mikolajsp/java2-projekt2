@@ -131,12 +131,62 @@ function placeMarkersOnMap(schoolArray) {
     mymap.addLayer(markers);
 }
 
+// fcja zoomowania
+function zoomFunction(schoolArray){
+
+}
+
+
+
+function setBoundries(schoolArray){
+	var midlon = 0;
+	var midlat = 0;
+	var no_outliers_lon = [];
+	var no_outliers_lat = [];
+	var n = schoolArray.length;
+	var mean_lon = 0;
+	var mean_lat = 0;
+    for(var c in schoolArray){
+    	mean_lon += c.lon;
+    	mean_lat += c.lat;
+    	no_outliers_lat.push(c.lat);
+    	no_outliers_lon.push(c.lon);
+    }
+    mean_lat /= n;
+    mean_lon /= n;
+    var latstd,lonstd;
+    try{
+	    latstd = Math.std(no_outliers_lat);
+    	lonstd = Math.std(no_outliers_lon);
+	    no_outliers_lon = no_outliers_lon.filter(a => mean_lon -3*lonstd < a < mean_lon + 3*lonstd );
+		no_outliers_lat = no_outliers_lat.filter(a => mean_lat -3*latstd < a < mean_lat + 3*latstd );
+		var center_zoomlon = 0;
+		for(var x in no_outliers_lon){
+			center_zoomlon += x;
+		}
+		center_zoomlon /= no_outliers_lon.length;
+		var center_zoomlat = 0;
+		for(var x in no_outliers_lat){
+			center_zoomlat += x;
+		}
+		center_zoomlat /= no_outliers_lat.length;
+
+		mymap.setView([center_zoomlat.length,center_zoomlon],6)
+    }catch(e){
+    	console.log(e.message);
+    }
+    
+}
+
+
+
 function execute() {
 
     document.getElementById("response").innerHTML = "";
 
     markers.clearLayers();
     content = requestSchoolList();
+    setBoundries(content)
     console.log(content);
 
     fillResponseDiv(content);

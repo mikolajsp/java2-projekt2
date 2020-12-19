@@ -29,7 +29,6 @@ public class SearchController{
 		List<School> res;
 		Set<String> simple_filters = new HashSet<String>(Arrays.asList(simple));
 		if(simple_filters.containsAll(allFilters.keySet())){
-			System.out.println("what");
 			res = ss.simpleFilter(allFilters);
 		}else {
 			res = ss.advancedFilter(allFilters);

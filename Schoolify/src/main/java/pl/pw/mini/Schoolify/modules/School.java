@@ -29,8 +29,8 @@ public class School{
 	@JsonUnwrapped
 	private Localization localization;
 	
-	private int students;
-	private int branches;
+	private Integer students;
+	private Integer branches;
 	
 	public Long getId() {
 		return id;
@@ -50,14 +50,14 @@ public class School{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getStudents() {
+	public Integer getStudents() {
 		return students;
 	}
 
 	public void setStudents(int students) {
 		this.students = students;
 	}
-	public int getBranches() {
+	public Integer getBranches() {
 		return branches;
 	}
 	public void setBranches(int branches) {
@@ -76,7 +76,7 @@ public class School{
 		this.localization = localization;
 	}
 	// haversine formula
-	public double calculateDistance(double lon,double lat) {
+	public Double calculateDistance(double lon,double lat) {
 		int R = 6370000; // earth radius
 		double pom = Math.PI/180;
 		double ph1 = lat * pom ;

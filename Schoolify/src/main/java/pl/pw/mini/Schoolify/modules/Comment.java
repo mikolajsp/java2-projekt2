@@ -16,10 +16,10 @@ public class Comment {
 	
 	private Long schoolId;
 	private String content;
-	private int rate;
+	private Integer rate;
 	private String user;
-	private int upVotes;
-	private int downVotes;
+	private Integer upVotes;
+	private Integer downVotes;
 	private Date date;
 	
 	public Comment() {}

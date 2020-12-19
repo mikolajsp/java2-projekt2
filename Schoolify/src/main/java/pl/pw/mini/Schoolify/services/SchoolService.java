@@ -76,12 +76,12 @@ public class SchoolService {
 		String voi = allFilters.getOrDefault("voivodeship","");
 		String county = allFilters.getOrDefault("county","");
 		String comm = allFilters.getOrDefault("community","");
-		List<School> ret = res.stream().filter(s -> us >= s.getStudents() && s.getStudents() >= ls).filter(
-					s-> s.getBranches() >= bl && bu >= s.getBranches()).filter(
+		List<School> ret = res.stream().filter(s -> s.getStudents() == null || (s.getStudents() != null && us >= s.getStudents() && s.getStudents() >= ls)).filter(
+					s-> s.getBranches() == null || (s.getBranches() != null && s.getBranches() >= bl && bu >= s.getBranches())).filter(
 							s -> s.getLocalization().getVoivodeship().startsWith(voi)
 							).filter(
-									s -> s.getLocalization().getCounty().startsWith(county)
-									).filter(s -> s.getLocalization().getCommunity().startsWith(comm)).collect(Collectors.toList());
+									s -> s.getLocalization().getCounty() == null || s.getLocalization().getCounty().startsWith(county)
+									).filter(s -> s.getLocalization().getCommunity() == null || s.getLocalization().getCommunity().startsWith(comm)).collect(Collectors.toList());
 		List<School> fin;
 		if(allFilters.containsKey("origin")) {
 			String or = allFilters.get("origin");
