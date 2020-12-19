@@ -22,14 +22,14 @@ public class SearchController{
 	@Autowired
 	SchoolService ss;
 	
-	@SuppressWarnings("unlikely-arg-type")
 	@CrossOrigin
 	@GetMapping("/search")
 	public ResponseEntity<List<School>> search(@RequestParam Map<String,String> allFilters){
 		String[] simple = {"town","name","type"};
 		List<School> res;
 		Set<String> simple_filters = new HashSet<String>(Arrays.asList(simple));
-		if(simple_filters.contains(allFilters)){
+		if(simple_filters.containsAll(allFilters.keySet())){
+			System.out.println("what");
 			res = ss.simpleFilter(allFilters);
 		}else {
 			res = ss.advancedFilter(allFilters);

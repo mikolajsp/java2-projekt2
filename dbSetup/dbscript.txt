@@ -21,7 +21,7 @@ town VARCHAR(255),
 lat DOUBLE,
 lon DOUBLE);
 
-LOAD DATA LOCAL INFILE "/home/pawelf/ZPOiF/School/config/schools.csv"
+LOAD DATA LOCAL INFILE "/home/pawelf/ZPOiF/School/dbSetup/final.csv"
 INTO TABLE schools
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"' LINES
