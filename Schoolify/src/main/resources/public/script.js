@@ -103,7 +103,7 @@ function createSchoolDescription(school) {
         "Liczba uczniów: " + school.students + "<br>" +
         "Email: " + school.email + "<br>" +
         "Telefon: " + school.phoneNumber + "<br>" +
-        "Strona internetowa: <a href=\"" + school.website + "\">" + school.website + "</a>" + "<br>" +
+        "Strona internetowa: <a href=\"https://" + school.website + "\">" + school.website + "</a>" + "<br>" +
         "Adres: " + school.street + " " + school.houseNumber + ", " + school.town + "<br><br>";
 }
 
@@ -111,8 +111,8 @@ function fillResponseDiv(schoolArray) {
     for (var school in schoolArray) {
         var newElement = document.createElement('div');
         newElement.id = schoolArray[school].id;
-        newElement.className = "school";
-        newElement.innerHTML = createSchoolDescription(schoolArray[school]);
+        newElement.className = "school well";
+        newElement.innerHTML = generateSchoolDiv(schoolArray[school]);
         document.getElementById("response").appendChild(newElement);
     }
 
@@ -129,6 +129,17 @@ function placeMarkersOnMap(schoolArray) {
     mymap.addLayer(markers);
 }
 
+
+function generateSchoolDiv(school){
+return       "<div class=\"row\">"+
+                        "<div class=\"col-xs-6 col-sm-9 col-md-9 col-lg-10 title\">" +
+                            "<h3>" + school.name  + "</h3>" +
+                            "<p>"+createSchoolDescription(school)+ "</p>"+
+                        "</div>"+
+                "</div>";
+
+}
+
 function execute() {
 
     document.getElementById("response").innerHTML = "";
@@ -141,3 +152,4 @@ function execute() {
     placeMarkersOnMap(content);
 
 }
+
