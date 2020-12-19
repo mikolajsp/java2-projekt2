@@ -93,7 +93,6 @@ function requestSchoolList(url) {
     return content;
 }
 
-
 function createSchoolDescription(school) {
     return "Typ: " + school.type + "<br>" +
         "Nazwa: " + school.name + "<br>" +
@@ -101,13 +100,12 @@ function createSchoolDescription(school) {
         "Powiat: " + school.county + "<br>" +
         "Gmina: " + school.community + "<br>" +
         "Liczba oddziałów: " + school.branches + "<br>" +
-        "Liczba uczniów: " + school.voivodeship + "<br>" +
+        "Liczba uczniów: " + school.students + "<br>" +
         "Email: " + school.email + "<br>" +
         "Telefon: " + school.phoneNumber + "<br>" +
         "Strona internetowa: <a href=\"" + school.website + "\">" + school.website + "</a>" + "<br>" +
         "Adres: " + school.street + " " + school.houseNumber + ", " + school.town + "<br><br>";
 }
-
 
 function fillResponseDiv(schoolArray) {
     for (var school in schoolArray) {
