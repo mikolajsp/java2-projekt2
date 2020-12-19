@@ -1,3 +1,0 @@
-# Wyznaczanie współrzędnych na podstawie adresu szkoły
-
-W tym podprogramie (zwykła Java, nie serwer, ponieważ musimy to zrobić tylko raz) wyznaczamy współrzędne geograficzne na podstawie adresu. Korzystamy w tym celu z api [https://www.geoapify.com/](https://www.geoapify.com/), gdzie pierwsze 100000 zapytań jest darmowych. W ten sposób otrzymujemy mniej lub bardziej dokładne wspórzędne każdej szkoły, które zapisujemy w pliku csv. Dopiero na jego podstawie zmodyfikowaliśmy odpowiednie kolumny w bazie danych.
