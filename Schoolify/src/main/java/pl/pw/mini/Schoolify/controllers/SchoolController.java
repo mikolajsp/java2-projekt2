@@ -1,6 +1,8 @@
 package pl.pw.mini.Schoolify.controllers;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,8 +27,8 @@ public class SchoolController {
 		return ResponseEntity.ok(sch);
 	}
 	@GetMapping("name/{name}")
-	public ResponseEntity<School> schoolByName(@PathVariable("name") String name) {
-		School sch = ss.findByName(name);
+	public ResponseEntity<List<School>> schoolByName(@PathVariable("name") String name) {
+		List<School> sch = ss.findByName(name);
 		return ResponseEntity.ok(sch);
 	}
 		
