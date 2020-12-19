@@ -22,7 +22,6 @@ public class SearchController{
 	@Autowired
 	SchoolService ss;
 	
-
 	@SuppressWarnings("unlikely-arg-type")
 	@CrossOrigin
 	@GetMapping("/search")
