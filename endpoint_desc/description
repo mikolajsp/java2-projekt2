@@ -1,0 +1,158 @@
+Opis endpointów na dzień: 19.12.2020
+
+
+Ścieżka:
+
+GET
+
+/school/id/{id placówki} 
+
+Opis:
+
+Zwraca pojedynczy School lub nic jeśli takowej nie ma (wyszukiwanie po id).
+
+Parametry:
+
+brak
+
+Przyklad:
+
+/school/id/624 
+
+-------------------
+
+Ścieżka:
+
+GET
+
+/school/name/{nazwa placówki} 
+
+
+Opis:
+
+Zwraca pojedynczy School lub nic jeśli takowej nie ma (wyszukiwanie po nazwie).
+
+Parametry:
+
+brak
+
+Przyklad:
+
+/school/id/Przedszkole%20Niepubliczne%20Promyczek
+
+-------------------
+
+Ścieżka:
+
+GET
+
+/search 
+
+Opis: 
+
+Zwraca listę szkół spełniających zadane kryteria.
+
+Parametry (wszystkie opcjonalne):
+
+name - fragment nazwy placówki (nie koniecznie prefix).
+town - miasto w którym chcemy wyszukiwać.
+type - typy placówek (takie jak np. "Liceum Ogólnokształcące").
+origin - idzie w parze z "distance", placówki oddalone o mniej niż "distance" od "origin".
+distance - jak wyżej, wartość domyślna (jeśli został podany "origin") - 5 km.
+voivodeship - wojewodztwo w którym wyszukiwać.
+county - gmina w którym wyszukiwać.
+community - powiat w którym wyszukiwać.
+studlower - minimalna liczba uczniów.
+studupper - maksymalna liczba uczniów.
+branlower - minimalna liczba oddziałów.
+branupper - maksymalna liczba odziałów.
+
+Przykłady:
+
+/search?studupper=500&branlower=4&community=Kolbuszowa&voivodeship=WOJ. PODKARPACKIE
+
+/search?type=Liceum Ogólnokształcące&town=Kraków&origin=Skalica 19&distance=5
+
+
+--------------
+
+Ścieżka:
+
+POST
+
+/comment/add 
+
+
+Opis:
+
+Dodaje nowy komentarz do wybranej szkoły, o ile spełnia zadane kryteria poprawności (np. brak wulgryzmów).
+
+Parametry:
+
+schoolId - id szkoły którą komentujemy.
+content  - zawartość komentarza.
+username - nazwa użytkownika.
+rate - wartość oceny placówki od 1 do 5.
+
+Przyklad:
+
+/comment/add?schoolId=12345&content=To jest bardzo mierna szkoła. Nie lubie.&rate=2&username=coolUser
+
+
+---------------
+
+Ścieżka:
+
+GET
+
+/comment/postid/{id szkoły}
+
+
+Opis:
+
+Zwraca listę komentarzy dodanych do danej placówki.
+
+Parametry:
+
+brak
+
+Przyklad:
+
+/comment/postid/1024
+
+
+---------------
+
+Ścieżka:
+
+POST
+
+/comment/(downvote|upvote)/{id komentarza}
+
+
+Opis:
+
+Downvotuje/upvotuje komentarz oznaczony przez "id komentarza"
+
+Parametry:
+
+brak
+
+Przyklady:
+
+/comment/upvote/4
+
+/comment/downvote/18
+
+
+
+
+
+
+
+
+
+
+
+
+
