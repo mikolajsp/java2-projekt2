@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.pw.mini.Schoolify.modules.School;
+import pl.pw.mini.Schoolify.modules.SearchResponseWrapper;
 import pl.pw.mini.Schoolify.services.SchoolService;
 
 @RestController
@@ -24,19 +25,10 @@ public class SearchController{
 	
 	@CrossOrigin
 	@GetMapping("/search")
-	public ResponseEntity<List<School>> search(@RequestParam Map<String,String> allFilters){
-		String[] simple = {"town","name","type"};
-		List<School> res;
-		Set<String> simple_filters = new HashSet<String>(Arrays.asList(simple));
-		if(simple_filters.containsAll(allFilters.keySet())){
-			res = ss.simpleFilter(allFilters);
-		}else {
-			res = ss.advancedFilter(allFilters);
-		}
-		return ResponseEntity.ok(res);
+	public ResponseEntity<SearchResponseWrapper> search(@RequestParam Map<String,String> allFilters){
+		SearchResponseWrapper srw = ss.search(allFilters);
+		return ResponseEntity.ok(srw);
 	}
 
-	
-	
 	
 }

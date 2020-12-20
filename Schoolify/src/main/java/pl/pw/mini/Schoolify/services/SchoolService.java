@@ -1,9 +1,14 @@
 package pl.pw.mini.Schoolify.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +16,10 @@ import org.springframework.stereotype.Service;
 
 import pl.pw.mini.Schoolify.modules.Comment;
 import pl.pw.mini.Schoolify.modules.ContentCrossExaminer;
+import pl.pw.mini.Schoolify.modules.Localization;
 import pl.pw.mini.Schoolify.modules.PositionFinder;
 import pl.pw.mini.Schoolify.modules.School;
+import pl.pw.mini.Schoolify.modules.SearchResponseWrapper;
 import pl.pw.mini.Schoolify.repositories.CommentRepository;
 import pl.pw.mini.Schoolify.repositories.SchoolRepository;
 
@@ -150,6 +157,195 @@ public class SchoolService {
 			cr.save(c);
 		}
 		
+	}
+	
+	public static Double calculateSD(List<Double> ld)
+    {
+        Double sum = 0.0, standardDeviation = 0.0;
+        int length = ld.size();
+
+        for(Double num : ld) {
+        	if(num != null) {
+        		sum += num;
+        	}
+            
+        }
+
+        Double mean = sum/length;
+
+        for(Double num: ld) {
+        	if(num != null) {
+                standardDeviation += Math.pow(num - mean, 2);
+        	}
+        }
+
+        return Math.sqrt(standardDeviation/length);
+    }
+	
+	private Double calculateAverage(List <Double> marks) {
+		  Double sum = 0.0;
+		  if(!marks.isEmpty()) {
+		    for (Double mark : marks) {
+		    	if(mark != null) {
+			        sum += mark;
+		    	}
+		    }
+		    return sum.doubleValue() / marks.size();
+		  }
+		  return sum;
+	}
+	
+	
+	public List<School> filterOutliers(List<School> res) {
+		List<Double> lon = res.stream().map(School::getLocalization).
+				map(Localization::getLon).collect(Collectors.toList());
+		List<Double> lat = res.stream().map(School::getLocalization).
+				map(Localization::getLat).collect(Collectors.toList());
+		Double lonStd = calculateSD(lon);
+		Double latStd = calculateSD(lat);
+		Double meanLon = calculateAverage(lon);
+		Double meanLat = calculateAverage(lat);
+		final Double numberOfStds = 3.0;
+		List<School> resFiltered = res.stream().filter(s->{
+			Localization loc = s.getLocalization();
+			if(loc == null) {
+				return false;
+			}
+			Double slon = loc.getLon();
+			Double slat = loc.getLat();
+			if(slon == null || slat == null) {
+				return false;
+			}
+			return (meanLat + numberOfStds*lonStd  >  slat && slat > meanLat - numberOfStds*lonStd 
+					&& meanLon + numberOfStds*latStd >  slon && slon > meanLon - numberOfStds*latStd );
+}
+		).collect(Collectors.toList());
+		System.out.println(resFiltered.size() - res.size());
+		return resFiltered;
+	}
+	
+	
+	public Double calculateDistance(Double lat1,Double lon1,Double lat2,Double lon2) {
+		int R = 6370000; // earth radius
+		double pom = Math.PI/180;
+		double ph1 = lat1 * pom ;
+		double ph2 = lat2 * pom;
+		double deltaphi = (lat2 - lat1) * pom;
+		double deltalambda = (lon2-lon1) * pom;
+		double a = Math.sin(deltaphi/2) * Math.sin(deltaphi/2) +
+		          Math.cos(ph1) * Math.cos(ph2) *
+		          Math.sin(deltalambda/2) * Math.sin(deltalambda/2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		return  R * c;
+	}
+	
+	
+	
+	
+	public List<School> filterOutliers2(List<School> res) {
+		List<Double> lon = res.stream().map(School::getLocalization).
+				map(Localization::getLon).collect(Collectors.toList());
+		List<Double> lat = res.stream().map(School::getLocalization).
+				map(Localization::getLat).collect(Collectors.toList());
+		Double meanLon = calculateAverage(lon);
+		Double meanLat = calculateAverage(lat);
+		List<Double> distances = new ArrayList<>();
+		for(School s: res) {
+			distances.add(s.calculateDistance(meanLat, meanLon));
+		}
+		Double sd = calculateSD(distances);
+		Double mean = calculateAverage(distances);
+		Double rule = 3.0;
+		List<School> filteredSchools = new ArrayList<>();
+		for(int i = 0; i < res.size(); i++) {
+			if(distances.get(i) <= mean + sd*rule && distances.get(i) >= mean - sd*rule ) {
+				filteredSchools.add(res.get(i));
+			}else {
+				System.out.println(res.get(i).getLocalization().getLat());
+				System.out.println(res.get(i).getLocalization().getLon());
+			}
+		}
+		System.out.println(res.size()-filteredSchools.size());
+		return filteredSchools;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	public Double[] calculateCenter(List<School> res){
+		Double[] positionCenter = new Double[2];
+		List<Double> lonFiltered = res.stream().map(School::getLocalization).
+				map(Localization::getLon).collect(Collectors.toList());
+		List<Double> latFiltered = res.stream().map(School::getLocalization).
+				map(Localization::getLat).collect(Collectors.toList());
+		if(res.size() == 0) {
+			// set pC as a "middle" of Poland if there are no Schools matching
+				positionCenter[0] = 52.06;
+				positionCenter[1] = 19.26;
+		}else {
+			positionCenter[0] = calculateAverage(latFiltered); 
+			positionCenter[1] = calculateAverage(lonFiltered);
+		}
+		return positionCenter;	
+		}
+	
+	public Double[] extremsLonLat(List<School> fSchools) {
+		Double res[] = {54.0, 49.0, 24.0, 14.0}; // min lat max lat min lon max lon for PL (swapped accordingly to perform min max) 
+		for(School s : fSchools){
+			Localization l = s.getLocalization();
+			Double lon = l.getLon();
+			Double lat = l.getLat();
+			if(lat < res[0]) {
+				res[0] = lat;
+			}
+			if(lat > res[1]){
+				res[1] = lat;
+			}
+			if(lon < res[2]) {
+				res[2] = lon;
+			}
+			if(lon > res[3]) {
+				res[3] = lon;			
+			}
+		}
+		return res;
+	}
+	
+	
+	
+	
+	public SearchResponseWrapper search(Map<String, String> allFilters){
+		SearchResponseWrapper srw = new SearchResponseWrapper();
+		String[] simple = {"town","name","type"};
+		List<School> res;
+		Set<String> simple_filters = new HashSet<String>(Arrays.asList(simple));
+		if(simple_filters.containsAll(allFilters.keySet())){
+			res = simpleFilter(allFilters);
+		}else {
+			res = advancedFilter(allFilters);
+		}
+		List<School> resWithoutOutliers = filterOutliers2(res);
+		Double[] center = calculateCenter(resWithoutOutliers);
+		srw.setSchoolList(resWithoutOutliers);
+		srw.setX_center(center[0]);
+		srw.setY_center(center[1]);
+//		if(resWithoutOutliers.size() == 0) {
+//			srw.setMinLat(49.0);
+//			srw.setMaxLat(54.0);
+//			srw.setMinLon(14.0);
+//			srw.setMaxLon(24.0);
+//		}else {
+//			Double[] extrems = extremsLonLat(resWithoutOutliers);
+//			srw.setMinLat(extrems[0]);
+//			srw.setMaxLat(extrems[1]);
+//			srw.setMinLon(extrems[2]);
+//			srw.setMaxLon(extrems[3]);
+//		}
+		return srw;
 	}
 	
 	

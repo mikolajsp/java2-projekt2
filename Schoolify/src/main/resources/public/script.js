@@ -1,6 +1,6 @@
 var mymap = L.map('mapid', {
     preferCanvas: true
-}).setView([52, 18], 6);
+}).setView([52, 19], 6);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(mymap);
@@ -139,6 +139,11 @@ return       "<div class=\"row\">"+
                 "</div>";
 
 }
+function changeCenter(schoolResponse){
+    var centerlat = schoolResponse.x_center;
+    var centerlon = schoolResponse.y_center;
+    mymap.setView([centerlat,centerlon],9);
+}
 
 function execute() {
 
@@ -147,9 +152,9 @@ function execute() {
     markers.clearLayers();
     content = requestSchoolList();
     console.log(content);
-
-    fillResponseDiv(content);
-    placeMarkersOnMap(content);
+    changeCenter(content);
+  //  fillResponseDiv(content.schoolList);
+    placeMarkersOnMap(content.schoolList);
 
 }
 
