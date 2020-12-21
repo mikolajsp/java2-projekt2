@@ -41,7 +41,7 @@ public class SchoolService {
 				town = allFilters.get("town");
 				if(allFilters.containsKey("type")){
 					type = allFilters.get("type");
-					res = sr.findByNameContainingAndTypeAndLocalizationTown(name, type, town);
+					res = sr.findByNameContainingAndTypeAndLocalizationTownStartsWith(name, type, town);
 				}else {
 					res = sr.findByNameContainingAndType(name,town);
 				}
@@ -58,9 +58,9 @@ public class SchoolService {
 				town = allFilters.get("town");
 				if(allFilters.containsKey("type")){
 					type = allFilters.get("type");
-					res = sr.findByTypeAndLocalizationTown(type, town);
+					res = sr.findByTypeAndLocalizationTownStartsWith(type, town);
 				}else {
-					res = sr.findByLocalizationTown(town);
+					res = sr.findByLocalizationTownStartsWith(town);
 				}
 			}else {
 				if(allFilters.containsKey("type")){
@@ -220,7 +220,6 @@ public class SchoolService {
 					&& meanLon + numberOfStds*latStd >  slon && slon > meanLon - numberOfStds*latStd );
 }
 		).collect(Collectors.toList());
-		System.out.println(resFiltered.size() - res.size());
 		return resFiltered;
 	}
 	
@@ -347,6 +346,54 @@ public class SchoolService {
 //		}
 		return srw;
 	}
+	
+	public void cleanCrap() {
+		List<School> schools = sr.findAll();
+		List<School> crappSchools = schools.stream().
+				filter(x -> x.getLocalization().getLat() == null || x.getLocalization().getLon() == null).
+				collect(Collectors.toList());
+		List<School> crappSchools2 = schools.stream().
+				filter( x ->
+				(x.getLocalization().getLat() == 0.0 || x.getLocalization().getLon() == 0.0) && x.getId() <= 55172 ).
+				collect(Collectors.toList());
+		sr.deleteAll(crappSchools);
+		sr.deleteAll(crappSchools2);
+	}
+	
+	
+	public void calcateMissingCoords() {
+		cleanCrap();
+		List<School> schools = sr.findAll();
+		List<School> to_add = schools.stream().
+		filter( x ->
+		x.getLocalization().getLat() == 0.0 || x.getLocalization().getLon() == 0.0).
+		collect(Collectors.toList());
+//		List<School> to_add = schools.stream().
+//		filter( x ->
+//		x.getId() >= 55181).
+//		collect(Collectors.toList());
+		for(School s : to_add) {
+			String point = s.getLocalization().getStreet()+ " " + s.getLocalization().getHouseNumber() + ", " + s.getLocalization().getTown() ;
+			Double position[] = PositionFinder.findLonLat(point);
+			Localization loc = s.getLocalization();
+			loc.setLat(position[1]);
+			loc.setLon(position[0]);
+			s.setLocalization(loc);
+		}
+		sr.saveAll(to_add);
+	}
+// nie pytaj xD
+//	public void fixFuckup(){
+//		List<School> schools = sr.findAll();
+//		List<School> uni = schools.stream().filter(x -> x.getId() >= 55181).collect(Collectors.toList());
+//		for(School s : uni) {
+//			Double lat = s.getLocalization().getLat();
+//			Double lon = s.getLocalization().getLon();
+//			s.getLocalization().setLat(lon);
+//			s.getLocalization().setLon(lat);
+//		}
+//		sr.saveAll(uni);
+//	}
 	
 	
 	

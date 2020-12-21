@@ -10,9 +10,10 @@ public interface SchoolRepository extends JpaRepository<School,Long>{
 	List<School> findByNameContaining(String search);
 	List<School> findByNameContainingAndType(String prefix,String type);
 	List<School> findByType(String type);
-	List<School> findByLocalizationTown(String string);
-	List<School> findByTypeAndLocalizationTown(String type, String town);
-	List<School> findByNameContainingAndTypeAndLocalizationTown(String name, String type, String town);
+	List<School> findByLocalizationTownStartsWith(String string);
+	List<School> findByTypeAndLocalizationTownStartsWith(String type, String town);
+	List<School> findByNameContainingAndTypeAndLocalizationTownStartsWith(String name, String type, String town);
+	List<School> findByLocalizationLatOrLocalizationLon(Double lat,Double lon);
 	
 	
 }
