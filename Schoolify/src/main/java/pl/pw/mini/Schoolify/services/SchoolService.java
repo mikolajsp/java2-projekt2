@@ -10,6 +10,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import pl.pw.mini.Schoolify.modules.Comment;
@@ -310,6 +313,13 @@ public class SchoolService {
 		return res;
 	}
 	
+	public void updatePopularity(List<School> pop) {
+		for(School s : pop) {
+			s.setPopularity(s.getPopularity() + 1);
+		}
+		sr.saveAll(pop);
+	}
+	
 	
 	
 	
@@ -339,7 +349,7 @@ public class SchoolService {
 			srw.setMinLon(extrems[2]);
 			srw.setMaxLon(extrems[3]);
 		}
-		System.out.println(srw.getSchoolList());
+		updatePopularity(srw.getSchoolList());
 		return srw;
 	}
 	
@@ -402,6 +412,15 @@ public class SchoolService {
 				sx.getContact().setWebsite(web.substring(3));
 		}
 		sr.saveAll(badLinks);
+	}
+
+	public SearchResponseWrapper mostPopular(Integer n){
+		SearchResponseWrapper srw = new SearchResponseWrapper();
+		Page<School> page = sr.findAll(
+				  PageRequest.of(0, n, Sort.by(Sort.Direction.DESC, "popularity")));		
+		List<School> mp = page.get().collect(Collectors.toList());
+		srw.setSchoolList(mp);
+		return srw;
 	}
 	
 	

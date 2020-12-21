@@ -19,7 +19,7 @@ public class School{
 	
 	private String type;
 	private String name;
-	
+	private Integer popularity;
 	@Embedded
 	@JsonUnwrapped
 	private Contact contact;
@@ -100,6 +100,12 @@ public class School{
 	public String toString() {
 		return "School [id=" + id + ", type=" + type + ", name=" + name + ", students=" + students + ", branches="
 				+ branches + "]";
+	}
+	public Integer getPopularity() {
+		return popularity;
+	}
+	public void setPopularity(Integer popularity) {
+		this.popularity = popularity;
 	}
 	
 	

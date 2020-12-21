@@ -19,7 +19,9 @@ branches INT,
 email VARCHAR(255),
 town VARCHAR(255),
 lat DOUBLE,
-lon DOUBLE);
+lon DOUBLE
+popularity INTEGER DEFAULT 0
+);
 
 LOAD DATA LOCAL INFILE "/home/pawelf/ZPOiF/School/dbSetup/final.csv"
 INTO TABLE schools
