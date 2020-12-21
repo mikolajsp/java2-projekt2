@@ -15,7 +15,8 @@ public class OwnerController {
 	// Wywołanie odfiltruje Ci niektore rekordy smieci w bazie danych i doliczy współrzędne uniwersytetów.
 	@GetMapping("/calculate")
 	public void calc() {
-		ss.calcateMissingCoords();
+//		ss.calcateMissingCoords();
 //		ss.fixFuckup();
+		ss.fixLinks();
 	}
 }

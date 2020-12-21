@@ -41,16 +41,16 @@ public class SchoolService {
 				town = allFilters.get("town");
 				if(allFilters.containsKey("type")){
 					type = allFilters.get("type");
-					res = sr.findByNameContainingAndTypeAndLocalizationTownStartsWith(name, type, town);
+					res = sr.findByNameAndTypeAndLocalizationTownStartsWith(name, type, town);
 				}else {
-					res = sr.findByNameContainingAndType(name,town);
+					res = sr.findByNameAndType(name,town);
 				}
 			}else {
 				if(allFilters.containsKey("type")){
 					type = allFilters.get("type");
-					res = sr.findByNameContainingAndType(name, type);
+					res = sr.findByNameAndType(name, type);
 				}else {
-					res = sr.findByNameContaining(name);
+					res = sr.findByName(name);
 				}
 			}
 		}else{
@@ -259,9 +259,6 @@ public class SchoolService {
 		for(int i = 0; i < res.size(); i++) {
 			if(distances.get(i) <= mean + sd*rule && distances.get(i) >= mean - sd*rule ) {
 				filteredSchools.add(res.get(i));
-			}else {
-				System.out.println(res.get(i).getLocalization().getLat());
-				System.out.println(res.get(i).getLocalization().getLon());
 			}
 		}
 		System.out.println(res.size()-filteredSchools.size());
@@ -394,6 +391,19 @@ public class SchoolService {
 //		}
 //		sr.saveAll(uni);
 //	}
+	
+	
+	public void fixLinks() {
+		List<School> s = sr.findAll();
+		List<School> withWebsites = s.stream().filter(x -> x.getContact() != null && x.getContact().getWebsite() != null).collect(Collectors.toList());
+		List<School> badLinks = withWebsites.stream().filter(x -> x.getContact().getWebsite().startsWith("://")).
+					collect(Collectors.toList());
+		for(School sx : badLinks) {
+				String web = sx.getContact().getWebsite();
+				sx.getContact().setWebsite(web.substring(3));
+		}
+		sr.saveAll(badLinks);
+	}
 	
 	
 	
