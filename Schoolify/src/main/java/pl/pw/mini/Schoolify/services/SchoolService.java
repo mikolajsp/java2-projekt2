@@ -2,12 +2,10 @@ package pl.pw.mini.Schoolify.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,7 @@ public class SchoolService {
 	CommentRepository cr;
 	ContentCrossExaminer cce = new ContentCrossExaminer();
 	
-	public List<School> simpleFilter(Map<String,String> allFilters){
+	public void simpleFilter(Map<String,String> allFilters,SearchResponseWrapper srw){
 		List<School> res;
 		String name,type,town;
 		if(allFilters.containsKey("name")){
@@ -41,16 +39,16 @@ public class SchoolService {
 				town = allFilters.get("town");
 				if(allFilters.containsKey("type")){
 					type = allFilters.get("type");
-					res = sr.findByNameAndTypeAndLocalizationTownStartsWith(name, type, town);
+					res = sr.findByNameStartsWithAndTypeAndLocalizationTown(name, type, town);
 				}else {
-					res = sr.findByNameAndType(name,town);
+					res = sr.findByNameStartsWithAndType(name,town);
 				}
 			}else {
 				if(allFilters.containsKey("type")){
 					type = allFilters.get("type");
-					res = sr.findByNameAndType(name, type);
+					res = sr.findByNameStartsWithAndType(name, type);
 				}else {
-					res = sr.findByName(name);
+					res = sr.findByNameContaining(name);
 				}
 			}
 		}else{
@@ -58,9 +56,9 @@ public class SchoolService {
 				town = allFilters.get("town");
 				if(allFilters.containsKey("type")){
 					type = allFilters.get("type");
-					res = sr.findByTypeAndLocalizationTownStartsWith(type, town);
+					res = sr.findByTypeAndLocalizationTown(type, town);
 				}else {
-					res = sr.findByLocalizationTownStartsWith(town);
+					res = sr.findByLocalizationTown(town);
 				}
 			}else {
 				if(allFilters.containsKey("type")){
@@ -71,11 +69,12 @@ public class SchoolService {
 				}
 			}
 		}
-		return res;
+		srw.setSchoolList(res);
 		}
 	
-	public List<School> advancedFilter(Map<String,String> allFilters){
-		List <School> res = simpleFilter(allFilters);
+	public void advancedFilter(Map<String,String> allFilters,SearchResponseWrapper srw){
+		simpleFilter(allFilters,srw);
+		List <School> res = srw.getSchoolList();
 		int ls = Integer.parseInt(allFilters.getOrDefault("studlower", "-1"));
 		int us = Integer.parseInt(allFilters.getOrDefault("studupper", "10000"));
 		int bl = Integer.parseInt(allFilters.getOrDefault("branlower", "-1"));
@@ -89,24 +88,24 @@ public class SchoolService {
 							).filter(
 									s -> s.getLocalization().getCounty() == null || s.getLocalization().getCounty().startsWith(county)
 									).filter(s -> s.getLocalization().getCommunity() == null || s.getLocalization().getCommunity().startsWith(comm)).collect(Collectors.toList());
-		List<School> fin;
-		if(allFilters.containsKey("origin")) {
+		if(allFilters.containsKey("origin")){
+			List<School> fin = new ArrayList<>();
 			String or = allFilters.get("origin");
 			int dist = Integer.parseInt(allFilters.getOrDefault("distance","5"));
 			Double[] coors = PositionFinder.findLonLat(or);
-			fin = new ArrayList<>();
+			srw.setOriginX(coors[1]);
+			srw.setOriginY(coors[0]);
+			srw.setAddress(or);
 			for(School s: ret){
 				double x = s.calculateDistance(coors[0], coors[1]);
 				if(x < 1000*dist){
 					fin.add(s);
 				}
 			}
-			
+			srw.setSchoolList(fin);
 		}else {
-			return ret;
+			srw.setSchoolList(ret);
 		}
-		
-		return fin;
 				
 	}
 
@@ -254,7 +253,7 @@ public class SchoolService {
 		}
 		Double sd = calculateSD(distances);
 		Double mean = calculateAverage(distances);
-		Double rule = 3.0;
+		Double rule = 2.0;
 		List<School> filteredSchools = new ArrayList<>();
 		for(int i = 0; i < res.size(); i++) {
 			if(distances.get(i) <= mean + sd*rule && distances.get(i) >= mean - sd*rule ) {
@@ -317,30 +316,30 @@ public class SchoolService {
 	public SearchResponseWrapper search(Map<String, String> allFilters){
 		SearchResponseWrapper srw = new SearchResponseWrapper();
 		String[] simple = {"town","name","type"};
-		List<School> res;
 		Set<String> simple_filters = new HashSet<String>(Arrays.asList(simple));
 		if(simple_filters.containsAll(allFilters.keySet())){
-			res = simpleFilter(allFilters);
+			simpleFilter(allFilters,srw);
 		}else {
-			res = advancedFilter(allFilters);
+			advancedFilter(allFilters,srw);
 		}
-		List<School> resWithoutOutliers = filterOutliers2(res);
+		List<School> resWithoutOutliers = filterOutliers2(srw.getSchoolList());
 		Double[] center = calculateCenter(resWithoutOutliers);
 		srw.setSchoolList(resWithoutOutliers);
 		srw.setX_center(center[0]);
 		srw.setY_center(center[1]);
-//		if(resWithoutOutliers.size() == 0) {
-//			srw.setMinLat(49.0);
-//			srw.setMaxLat(54.0);
-//			srw.setMinLon(14.0);
-//			srw.setMaxLon(24.0);
-//		}else {
-//			Double[] extrems = extremsLonLat(resWithoutOutliers);
-//			srw.setMinLat(extrems[0]);
-//			srw.setMaxLat(extrems[1]);
-//			srw.setMinLon(extrems[2]);
-//			srw.setMaxLon(extrems[3]);
-//		}
+		if(resWithoutOutliers.size() == 0) {
+			srw.setMinLat(49.0);
+			srw.setMaxLat(54.0);
+			srw.setMinLon(14.0);
+			srw.setMaxLon(24.0);
+		}else {
+			Double[] extrems = extremsLonLat(resWithoutOutliers);
+			srw.setMinLat(extrems[0]);
+			srw.setMaxLat(extrems[1]);
+			srw.setMinLon(extrems[2]);
+			srw.setMaxLon(extrems[3]);
+		}
+		System.out.println(srw.getSchoolList());
 		return srw;
 	}
 	

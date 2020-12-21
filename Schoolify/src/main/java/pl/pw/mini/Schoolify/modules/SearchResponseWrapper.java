@@ -10,7 +10,25 @@ public class SearchResponseWrapper {
 	private Double maxLon;
 	private Double minLat;
 	private Double maxLat;
+	private Double originX;
+	private Double originY;
+	private String address;
 
+	public String getAddress() {
+		return address;
+	}
+	public Double getOriginX() {
+		return originX;
+	}
+	public void setOriginX(Double originX) {
+		this.originX = originX;
+	}
+	public Double getOriginY() {
+		return originY;
+	}
+	public void setOriginY(Double originY) {
+		this.originY = originY;
+	}
 	public Double getMinLon() {
 		return minLon;
 	}
@@ -49,6 +67,9 @@ public class SearchResponseWrapper {
 	}
 	public Double getY_center() {
 		return y_center;
+	}
+	public void setAddress(String adress) {
+		this.address = adress;
 	}
 	public void setY_center(Double y_center) {
 		this.y_center = y_center;

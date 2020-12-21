@@ -6,6 +6,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(mymap);
 var markers = L.layerGroup();
 
+
 function createRequestURI() {
 
     var town = document.getElementById("itown").value;
@@ -79,6 +80,7 @@ function createRequestURI() {
         var key2 = encodeURIComponent("origin");
         var value2 = encodeURIComponent(origin);
         base += key1 + "=" + value1 + "&" + key2 + "=" + value2 + "&";
+        setOriginMarker = true;
     }
 
     return base;
@@ -118,16 +120,17 @@ function fillResponseDiv(schoolArray) {
 
 }
 
-function placeMarkersOnMap(schoolArray) {
-    schoolArray.forEach(element => {
+function placeMarkersOnMap(content) {
+     
+    var sL = content.schoolList;
+    sL.forEach(element => {
         var marker = L.circleMarker([element.lat, element.lon], {
             radius: 7
         }).addTo(markers);
         var text = createSchoolDescription(element);
         marker.bindPopup(text);
     });
-    mymap.addLayer(markers);
-}
+    }
 
 
 function generateSchoolDiv(school){
@@ -145,16 +148,34 @@ function changeCenter(schoolResponse){
     mymap.setView([centerlat,centerlon],9);
 }
 
+function setHome(cont){
+        var redTag = new L.Icon({
+          iconUrl: 'marker-icon-red.png'
+    }
+    );
+
+    var m = L.marker([content.originX, content.originY], {
+        icon: redTag,
+         iconSize: [32, 32],
+        iconAnchor: [16,32]
+    }).addTo(markers)
+        var ad = content.address;
+        m.bindPopup(ad);
+    mymap.addLayer(markers);
+}
 function execute() {
-
     document.getElementById("response").innerHTML = "";
-
     markers.clearLayers();
     content = requestSchoolList();
     console.log(content);
     changeCenter(content);
   //  fillResponseDiv(content.schoolList);
-    placeMarkersOnMap(content.schoolList);
+    placeMarkersOnMap(content);
+    if(content.originX){
+        setHome(content);
+    }
+    mymap.addLayer(markers);
+
 
 }
 
