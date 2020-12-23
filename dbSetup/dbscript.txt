@@ -19,20 +19,15 @@ branches INT,
 email VARCHAR(255),
 town VARCHAR(255),
 lat DOUBLE,
-lon DOUBLE
+lon DOUBLE,
 popularity INTEGER DEFAULT 0
 );
 
-LOAD DATA LOCAL INFILE "/home/pawelf/ZPOiF/School/dbSetup/final.csv"
+LOAD DATA LOCAL INFILE "<<PATH TO CSV>>"
 INTO TABLE schools
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"' LINES
 TERMINATED BY '\n';
-
-
------------------ adding comments table ------------------
-
-use eduinfo
 
 CREATE TABLE comments (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -46,14 +41,6 @@ date DATETIME
 );
 
 
-
-
-
-
-
-
-
-)
 
 
 
