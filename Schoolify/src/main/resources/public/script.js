@@ -169,7 +169,7 @@ function execute() {
     content = requestSchoolList();
     console.log(content);
     changeCenter(content);
-  //  fillResponseDiv(content.schoolList);
+    fillResponseDiv(content.schoolList);
     placeMarkersOnMap(content);
     if(content.originX){
         setHome(content);
