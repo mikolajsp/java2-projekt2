@@ -106,7 +106,8 @@ function createSchoolDescription(school) {
         "Email: " + school.email + "<br>" +
         "Telefon: " + school.phoneNumber + "<br>" +
         "Strona internetowa: <a href=\"https://" + school.website + "\">" + school.website + "</a>" + "<br>" +
-        "Adres: " + school.street + " " + school.houseNumber + ", " + school.town + "<br><br>";
+        "Adres: " + school.street + " " + school.houseNumber + ", " + school.town + "<br><br>" +
+        "<a href =\"schoolpage.html?schoolid="+ school.id + "\">Więcej >> </a>" ;
 }
 
 function fillResponseDiv(schoolArray) {
