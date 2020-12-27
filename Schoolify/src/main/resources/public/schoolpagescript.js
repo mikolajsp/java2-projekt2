@@ -33,13 +33,68 @@ function createDetailedSchoolDescription(school) {
         "</p>"
     }
 
+
+function getComments(id){
+    var url = "http://localhost:8080/comment/postid/" + id;
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", url, false);
+    xmlHttp.send(null);
+    var content = JSON.parse(xmlHttp.responseText);
+    return content;
+}
+
+function sendComment(){
+    var content = document.getElementById("comment").value 
+    var user = document.getElementById("username").value 
+    var rating = parseInt(document.getElementById("rating").value)
+    var schoolid = parseInt(getQueryVariable("schoolid"))
+    console.log(JSON.stringify({
+        schoolId: schoolid,
+        content: content,
+        username: user,
+        rate: rating
+    }));
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:8080/comment/add", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify({
+        schoolId: schoolid,
+        content: content,
+        username: user,
+        rate: rating
+    }))
+}
+
+function displayComments(commentArray){
+    for(var comment in commentArray){
+        var newElement = document.createElement('div');
+        newElement.id = commentArray[comment].id;
+        newElement.className = "comment";
+        newElement.innerHTML = 
+       `
+        <div class="row">
+            <div class="col-md-10 username">
+     ` + commentArray[comment].user + `</div>
+            <div class="col-md-2">
+                Ocena: ` + commentArray[comment].rate +
+            `</div>
+        </div>
+        <div class="row"> <div class="col-md-12">`+ commentArray[comment].content + `</div> </div>`      
+        commentArray[comment].schoolId + commentArray[comment].content;
+        document.getElementById("comments").appendChild(newElement);
+    }
+}
+
+
 function main(){
 
-    schoolid = getQueryVariable("schoolid")
-    url = "http://localhost:8080/school/id/" + schoolid;
-    console.log(url)
-    school = getschoolinfo(url)
+    var schoolid = getQueryVariable("schoolid");
+    var url = "http://localhost:8080/school/id/" + schoolid;
+    console.log(url);
+    var school = getschoolinfo(url);
 
     document.getElementById("info").innerHTML = createDetailedSchoolDescription(school);
-
+    var comments = getComments(schoolid);
+    displayComments(comments);
+    
 }

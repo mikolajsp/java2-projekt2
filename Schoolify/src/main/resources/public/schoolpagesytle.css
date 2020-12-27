@@ -6,3 +6,7 @@ body{
 .navbar .navbar-brand{
     margin-left: 15px;
   }
+
+.username{
+    font-weight: bold;
+}
