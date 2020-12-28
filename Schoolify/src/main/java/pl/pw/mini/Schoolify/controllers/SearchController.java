@@ -29,7 +29,7 @@ public class SearchController{
 		SearchResponseWrapper srw = ss.search(allFilters);
 		return ResponseEntity.ok(srw);
 	}
-	
+	@CrossOrigin
 	@GetMapping("/mostpopular")
 	public ResponseEntity<SearchResponseWrapper> mostPopular(@RequestParam Integer n){
 		SearchResponseWrapper srw = ss.mostPopular(n);

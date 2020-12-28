@@ -42,7 +42,7 @@ public class SchoolService {
 				town = allFilters.get("town");
 				if(allFilters.containsKey("type")){
 					type = allFilters.get("type");
-					res = sr.findByNameStartsWithAndTypeAndLocalizationTown(name, type, town);
+					res = sr.findByNameStartsWithAndTypeAndLocalizationTownStartsWith(name, type, town);
 				}else {
 					res = sr.findByNameStartsWithAndType(name,town);
 				}
@@ -59,9 +59,9 @@ public class SchoolService {
 				town = allFilters.get("town");
 				if(allFilters.containsKey("type")){
 					type = allFilters.get("type");
-					res = sr.findByTypeAndLocalizationTown(type, town);
+					res = sr.findByTypeAndLocalizationTownStartsWith(type, town);
 				}else {
-					res = sr.findByLocalizationTown(town);
+					res = sr.findByLocalizationTownStartsWith(town);
 				}
 			}else {
 				if(allFilters.containsKey("type")){
@@ -113,10 +113,20 @@ public class SchoolService {
 	}
 
 	public School findById(Long id) {
-		return sr.findById(id).orElse(null);
+		School s = sr.findById(id).orElse(null);
+		if(s != null) {
+			s.setPopularity(s.getPopularity()+1);
+			sr.save(s);
+		}
+		return s;
 	}
 	public List<School> findByName(String name) {
-		return this.sr.findByName(name);
+		List<School> sc = sr.findByName(name);
+		for(School s:sc) {
+			s.setPopularity(s.getPopularity()+1);
+		}
+		return sc;
+		
 	}
 	
 	
@@ -263,7 +273,6 @@ public class SchoolService {
 				filteredSchools.add(res.get(i));
 			}
 		}
-		System.out.println(res.size()-filteredSchools.size());
 		return filteredSchools;
 		
 	}
@@ -313,12 +322,12 @@ public class SchoolService {
 		return res;
 	}
 	
-	public void updatePopularity(List<School> pop) {
-		for(School s : pop) {
-			s.setPopularity(s.getPopularity() + 1);
-		}
-		sr.saveAll(pop);
-	}
+//	public void updatePopularity(List<School> pop) {
+//		for(School s : pop) {
+//			s.setPopularity(s.getPopularity() + 1);
+//		}
+//		sr.saveAll(pop);
+//	}
 	
 	
 	
@@ -349,7 +358,6 @@ public class SchoolService {
 			srw.setMinLon(extrems[2]);
 			srw.setMaxLon(extrems[3]);
 		}
-		updatePopularity(srw.getSchoolList());
 		return srw;
 	}
 	

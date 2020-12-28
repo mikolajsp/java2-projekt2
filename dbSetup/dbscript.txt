@@ -26,8 +26,9 @@ popularity INTEGER DEFAULT 0
 LOAD DATA LOCAL INFILE "<<PATH TO CSV>>"
 INTO TABLE schools
 FIELDS TERMINATED BY ','
-ENCLOSED BY '"' LINES
-TERMINATED BY '\n';
+ENCLOSED BY '"' LINES // chyba tego nie trzeba, mi dziala tylko bez
+TERMINATED BY '\n'; // chyba tego nie trzeba, mi dziala tylko bez
+
 
 CREATE TABLE comments (
 id INT AUTO_INCREMENT PRIMARY KEY,
