@@ -4,6 +4,7 @@ import java.util.List;
 
 public class SearchResponseWrapper {
 	private List<School> schoolList;
+	private List<School> mostPopular;
 	private Double x_center;
 	private Double y_center;
 	private Double minLon;
@@ -73,6 +74,12 @@ public class SearchResponseWrapper {
 	}
 	public void setY_center(Double y_center) {
 		this.y_center = y_center;
+	}
+	public List<School> getMostPopular() {
+		return mostPopular;
+	}
+	public void setMostPopular(List<School> mostPopular) {
+		this.mostPopular = mostPopular;
 	}
 	
 	

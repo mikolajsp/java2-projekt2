@@ -110,13 +110,29 @@ function createSchoolDescription(school) {
         "<a href =\"schoolpage.html?schoolid="+ school.id + "\">Więcej >> </a>" ;
 }
 
+
+function createSchoolDescriptionBasic(school) {
+    return 
+        "Nazwa: " + school.name + "<br>" +
+        "<a href =\"schoolpage.html?schoolid="+ school.id + "\">Więcej >> </a>" ;
+}
+function generateText(){
+    return "Najbardziej popularne wśród użykowników";
+}
+
 function fillResponseDiv(schoolArray) {
+    var intro = document.createElement('h4');
+    intro.id = 0;
+    intro.innerHTML = generateText();
+    document.getElementById("response").appendChild(intro);
+    var i = 1;
     for (var school in schoolArray) {
         var newElement = document.createElement('div');
         newElement.id = schoolArray[school].id;
         newElement.className = "school well";
-        newElement.innerHTML = generateSchoolDiv(schoolArray[school]);
+        newElement.innerHTML = generateSchoolDivOnlyBasic(schoolArray[school],i);
         document.getElementById("response").appendChild(newElement);
+        i++;
     }
 
 }
@@ -143,6 +159,17 @@ return       "<div class=\"row\">"+
                 "</div>";
 
 }
+
+function generateSchoolDivOnlyBasic(school,i){
+return       "<div class=\"row\">"+
+                        "<div class=\"col-xs-6 col-sm-9 col-md-9 col-lg-10 title\">" +
+                            "<p style=\"font-size:18px;\">"+ "<a href =\"schoolpage.html?schoolid="+ school.id + "\">"+ i + ". " + school.name + "</a>"  + "</p>"+
+                        "</div>"+
+                "</div>";
+
+}
+
+
 function changeCenter(schoolResponse){
     var centerlat = schoolResponse.x_center;
     var centerlon = schoolResponse.y_center;
@@ -170,7 +197,7 @@ function execute() {
     content = requestSchoolList();
     console.log(content);
     changeCenter(content);
-    fillResponseDiv(content.schoolList);
+    fillResponseDiv(content.mostPopular);
     placeMarkersOnMap(content);
     if(content.originX){
         setHome(content);

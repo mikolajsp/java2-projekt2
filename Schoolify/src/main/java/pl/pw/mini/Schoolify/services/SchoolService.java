@@ -2,6 +2,7 @@ package pl.pw.mini.Schoolify.services;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import pl.pw.mini.Schoolify.modules.Comment;
+import pl.pw.mini.Schoolify.modules.CommentResponseWrapper;
 import pl.pw.mini.Schoolify.modules.ContentCrossExaminer;
 import pl.pw.mini.Schoolify.modules.Localization;
 import pl.pw.mini.Schoolify.modules.PositionFinder;
@@ -132,6 +134,15 @@ public class SchoolService {
 	
 	public List<Comment> findCommentsById(Long id){
 		return cr.findBySchoolId(id);
+	}
+	
+	
+	
+	public CommentResponseWrapper getComments(Long id) {
+		List<Comment> lc = findCommentsById(id);
+		CommentResponseWrapper crw = new CommentResponseWrapper();
+		crw.setComments(lc);
+		return crw;
 	}
 	
 	
@@ -322,16 +333,7 @@ public class SchoolService {
 		return res;
 	}
 	
-//	public void updatePopularity(List<School> pop) {
-//		for(School s : pop) {
-//			s.setPopularity(s.getPopularity() + 1);
-//		}
-//		sr.saveAll(pop);
-//	}
-	
-	
-	
-	
+		
 	public SearchResponseWrapper search(Map<String, String> allFilters){
 		SearchResponseWrapper srw = new SearchResponseWrapper();
 		String[] simple = {"town","name","type"};
@@ -358,55 +360,31 @@ public class SchoolService {
 			srw.setMinLon(extrems[2]);
 			srw.setMaxLon(extrems[3]);
 		}
+		srw.setMostPopular(mostPopular(resWithoutOutliers,10));
 		return srw;
 	}
 	
-	public void cleanCrap() {
-		List<School> schools = sr.findAll();
-		List<School> crappSchools = schools.stream().
-				filter(x -> x.getLocalization().getLat() == null || x.getLocalization().getLon() == null).
-				collect(Collectors.toList());
-		List<School> crappSchools2 = schools.stream().
-				filter( x ->
-				(x.getLocalization().getLat() == 0.0 || x.getLocalization().getLon() == 0.0) && x.getId() <= 55172 ).
-				collect(Collectors.toList());
-		sr.deleteAll(crappSchools);
-		sr.deleteAll(crappSchools2);
-	}
 	
-	
-	public void calcateMissingCoords() {
-		cleanCrap();
-		List<School> schools = sr.findAll();
-		List<School> to_add = schools.stream().
-		filter( x ->
-		x.getLocalization().getLat() == 0.0 || x.getLocalization().getLon() == 0.0).
-		collect(Collectors.toList());
+//	public void calcateMissingCoords() {
+//		cleanCrap();
+//		List<School> schools = sr.findAll();
 //		List<School> to_add = schools.stream().
 //		filter( x ->
-//		x.getId() >= 55181).
+//		x.getLocalization().getLat() == 0.0 || x.getLocalization().getLon() == 0.0).
 //		collect(Collectors.toList());
-		for(School s : to_add) {
-			String point = s.getLocalization().getStreet()+ " " + s.getLocalization().getHouseNumber() + ", " + s.getLocalization().getTown() ;
-			Double position[] = PositionFinder.findLonLat(point);
-			Localization loc = s.getLocalization();
-			loc.setLat(position[1]);
-			loc.setLon(position[0]);
-			s.setLocalization(loc);
-		}
-		sr.saveAll(to_add);
-	}
-// nie pytaj xD
-//	public void fixFuckup(){
-//		List<School> schools = sr.findAll();
-//		List<School> uni = schools.stream().filter(x -> x.getId() >= 55181).collect(Collectors.toList());
-//		for(School s : uni) {
-//			Double lat = s.getLocalization().getLat();
-//			Double lon = s.getLocalization().getLon();
-//			s.getLocalization().setLat(lon);
-//			s.getLocalization().setLon(lat);
+////		List<School> to_add = schools.stream().
+////		filter( x ->
+////		x.getId() >= 55181).
+////		collect(Collectors.toList());
+//		for(School s : to_add) {
+//			String point = s.getLocalization().getStreet()+ " " + s.getLocalization().getHouseNumber() + ", " + s.getLocalization().getTown() ;
+//			Double position[] = PositionFinder.findLonLat(point);
+//			Localization loc = s.getLocalization();
+//			loc.setLat(position[1]);
+//			loc.setLon(position[0]);
+//			s.setLocalization(loc);
 //		}
-//		sr.saveAll(uni);
+//		sr.saveAll(to_add);
 //	}
 	
 	
@@ -422,13 +400,9 @@ public class SchoolService {
 		sr.saveAll(badLinks);
 	}
 
-	public SearchResponseWrapper mostPopular(Integer n){
-		SearchResponseWrapper srw = new SearchResponseWrapper();
-		Page<School> page = sr.findAll(
-				  PageRequest.of(0, n, Sort.by(Sort.Direction.DESC, "popularity")));		
-		List<School> mp = page.get().collect(Collectors.toList());
-		srw.setSchoolList(mp);
-		return srw;
+	public List<School> mostPopular(List<School> selected, Integer n){
+		List<School> by_pop = selected.stream().sorted(Comparator.comparingInt(s -> -s.getPopularity())).collect(Collectors.toList());
+		return by_pop.subList(Math.max(0, by_pop.size()- n) , by_pop.size());
 	}
 	
 	
