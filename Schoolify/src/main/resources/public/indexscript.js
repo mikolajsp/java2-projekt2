@@ -1,3 +1,6 @@
+
+var DOMAIN = "http://localhost:8080";
+
 var mymap = L.map('mapid', {
     preferCanvas: true
 }).setView([52, 19], 6);
@@ -22,7 +25,7 @@ function createRequestURI() {
     var origin = document.getElementById("origin").value;
     var distance = document.getElementById("distance").value;
 
-    var base = "http://localhost:8080/search?";
+    var base = DOMAIN + "/search?";
 
     if (town) {
         var key = encodeURIComponent("town");

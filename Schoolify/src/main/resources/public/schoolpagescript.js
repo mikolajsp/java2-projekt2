@@ -1,3 +1,6 @@
+var DOMAIN = "http://localhost:8080";
+
+
 function getQueryVariable(variable)
 {
        var query = window.location.search.substring(1);
@@ -35,7 +38,7 @@ function createDetailedSchoolDescription(school) {
 
 
 function getComments(id){
-    var url = "http://localhost:8080/comment/postid/" + id;
+    var url = DOMAIN + "/comment/pid/" + id;
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", url, false);
     xmlHttp.send(null);
@@ -48,21 +51,11 @@ function sendComment(){
     var user = document.getElementById("username").value 
     var rating = parseInt(document.getElementById("rating").value)
     var schoolid = parseInt(getQueryVariable("schoolid"))
-    console.log(JSON.stringify({
-        schoolId: schoolid,
-        content: content,
-        username: user,
-        rate: rating
-    }));
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost:8080/comment/add", true);
+    var params = "?schoolId="+schoolid+"&content=" + content + "&username=" + user + "&rate=" + rating;
+    xhr.open("POST", DOMAIN+"/comment/add"+params, true);
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(JSON.stringify({
-        schoolId: schoolid,
-        content: content,
-        username: user,
-        rate: rating
-    }))
+    xhr.send(null);
 }
 
 function displayComments(commentArray){
@@ -89,12 +82,10 @@ function displayComments(commentArray){
 function main(){
 
     var schoolid = getQueryVariable("schoolid");
-    var url = "http://localhost:8080/school/id/" + schoolid;
-    console.log(url);
+    var url = DOMAIN + "/school/id/" + schoolid;
     var school = getschoolinfo(url);
-
     document.getElementById("info").innerHTML = createDetailedSchoolDescription(school);
     var comments = getComments(schoolid);
-    displayComments(comments);
+    displayComments(comments.comments);
     
 }
