@@ -49,34 +49,66 @@ function getComments(id){
 function sendComment(){
     var content = document.getElementById("comment").value 
     var user = document.getElementById("username").value 
-    var rating = parseInt(document.getElementById("rating").value)
+    var rate = parseInt(document.getElementsByClassName("active")[1].innerHTML);
     var schoolid = parseInt(getQueryVariable("schoolid"))
     var xhr = new XMLHttpRequest();
-    var params = "?schoolId="+schoolid+"&content=" + content + "&username=" + user + "&rate=" + rating;
+    var params = "?schoolId="+schoolid+"&content=" + content + "&username=" + user + "&rate=" + rate;
     xhr.open("POST", DOMAIN+"/comment/add"+params, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(null);
 }
 
+function getNStars(n){
+    var res = ""
+    for(var i = 0; i < n; i++){
+        res += "⭐";
+    }
+    return res;
+}
+
+
+function generateCommentText(comment){
+    var res = `<div class="row">
+            <div class="col-md-10 username">
+     ` + comment.user + `</div>` + 
+           `<div class="col-md-2">` + getNStars(comment.rate) +
+            `</div>` +
+           `<div class="row"> <div class = "col-md-5">`+  comment.date + 
+        `</div>` + 
+        `<div class="row"> <div class="col-md-12">`+ comment.content + `</div> </div>`  + '<br>' + '<br>';
+    return res;
+
+}
+
 function displayComments(commentArray){
+    var sum = 0;
     for(var comment in commentArray){
+        var com = commentArray[comment];
+        sum += com.rate;
         var newElement = document.createElement('div');
         newElement.id = commentArray[comment].id;
         newElement.className = "comment";
-        newElement.innerHTML = 
-       `
-        <div class="row">
-            <div class="col-md-10 username">
-     ` + commentArray[comment].user + `</div>
-            <div class="col-md-2">
-                Ocena: ` + commentArray[comment].rate +
-            `</div>
-        </div>
-        <div class="row"> <div class="col-md-12">`+ commentArray[comment].content + `</div> </div>`      
+        newElement.innerHTML = generateCommentText(com);
         commentArray[comment].schoolId + commentArray[comment].content;
         document.getElementById("comments").appendChild(newElement);
     }
+    var avg;
+    if(commentArray.length > 0){
+            avg = sum/commentArray.length;
+    }else{
+        avg = -1;
+    }
+    return avg
 }
+
+function putAvg(avg){
+
+    var txt = "<br> Średnia ocena: <br>" +  getNStars(Math.round(avg));
+    var nel = document.createElement('p');
+    nel.innerHTML = txt;
+    document.getElementById("avg").appendChild(nel);
+}
+
 
 
 function main(){
@@ -86,6 +118,7 @@ function main(){
     var school = getschoolinfo(url);
     document.getElementById("info").innerHTML = createDetailedSchoolDescription(school);
     var comments = getComments(schoolid);
-    displayComments(comments.comments);
+    var avg = displayComments(comments.comments);
+    putAvg(avg);
     
 }
