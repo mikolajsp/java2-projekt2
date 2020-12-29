@@ -1,15 +1,17 @@
 package pl.pw.mini.Schoolify.modules;
+
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
-@Entity
-@Table(name="comments")
-public class Comment {
+import java.util.Date;
+
+public class Comment2 {
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -20,16 +22,13 @@ public class Comment {
 	private String user;
 	private Integer upVotes;
 	private Integer downVotes;
-	private LocalDate date;
 	
-	public Comment() {
-		
-	}
+	public Comment2() {}
 	
 	
 	
-	public Comment(Long id, Long schoolId, String content, Integer rate, String user, Integer upVotes, Integer downVotes,
-			LocalDate date) {
+	public Comment2(Long id, Long schoolId, String content, int rate, String user, int upVotes, int downVotes) {
+		super();
 		this.id = id;
 		this.schoolId = schoolId;
 		this.content = content;
@@ -37,16 +36,7 @@ public class Comment {
 		this.user = user;
 		this.upVotes = upVotes;
 		this.downVotes = downVotes;
-		this.date = date;
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "Comment [id=" + id + ", schoolId=" + schoolId + ", content=" + content + ", rate=" + rate + ", user="
-				+ user + ", upVotes=" + upVotes + ", downVotes=" + downVotes + ", date=" + date + "]";
-	}
+		}
 
 
 
@@ -86,13 +76,6 @@ public class Comment {
 	public void setDownVotes(int downVotes) {
 		this.downVotes = downVotes;
 	}
-	public LocalDate getDate() {
-		return date;
-	}
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
 
 	public Long getSchoolId() {
 		return schoolId;

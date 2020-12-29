@@ -1,5 +1,6 @@
 package pl.pw.mini.Schoolify.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -34,6 +35,12 @@ public class SchoolService {
 	@Autowired
 	CommentRepository cr;
 	ContentCrossExaminer cce = new ContentCrossExaminer();
+	
+	public List<Comment> allComments(){
+		return cr.findAll();
+	}
+	
+	
 	
 	public void simpleFilter(Map<String,String> allFilters,SearchResponseWrapper srw){
 		List<School> res;
@@ -156,7 +163,9 @@ public class SchoolService {
 		ncom.setContent(cont);
 		ncom.setUser(us);
 		ncom.setRate(rate);
-		ncom.setDate(new Date());
+		ncom.setDate(LocalDate.now());
+		ncom.setDownVotes(0);
+		ncom.setUpVotes(0);
 		cr.save(ncom);
 	}
 	

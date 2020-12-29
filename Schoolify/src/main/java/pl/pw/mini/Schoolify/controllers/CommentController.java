@@ -1,6 +1,5 @@
 package pl.pw.mini.Schoolify.controllers;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,13 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import pl.pw.mini.Schoolify.modules.Comment;
 import pl.pw.mini.Schoolify.modules.CommentResponseWrapper;
 import pl.pw.mini.Schoolify.services.SchoolService;
 
 @RestController
 @RequestMapping("/comment")
+@CrossOrigin
 public class CommentController {
 	
 	@Autowired
@@ -28,20 +26,18 @@ public class CommentController {
 			ss.addComment(schoolId, content, username, rate);
 		}
 	}	
-	@CrossOrigin
-	@GetMapping("postid/{postid}")
-	public ResponseEntity<CommentResponseWrapper> getCommentsForSchoolId(@PathVariable("postid") Long postid){
-		CommentResponseWrapper crw = ss.getComments(postid);
+	@GetMapping("/pid/{pid}")
+	public ResponseEntity<CommentResponseWrapper> getCommentsForSchoolId(@PathVariable("pid") Integer pid){
+		CommentResponseWrapper crw = ss.getComments(Long.valueOf(pid));
 		return ResponseEntity.ok(crw);
 	}
 	
-	
-	@PostMapping("upvote/{commentid}")
+	@PostMapping("/upvote/{commentid}")
 	public void upVoteComment(@PathVariable("commentid") Long id) {
 		ss.upVoteComment(id);
 	}
 	
-	@PostMapping("downvote/{commentid}")
+	@PostMapping("/downvote/{commentid}")
 	public void downVoteComment(@PathVariable("commentid") Long id) {
 		ss.downVoteComment(id);
 	}
