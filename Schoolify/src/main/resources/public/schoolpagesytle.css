@@ -32,6 +32,17 @@ body{
     color: #9e9e9e;
 }
 
+#outer
+{
+    width:100%;
+    text-align: center;
+}
+
+.inner
+{
+    display: block;
+}
+
 
 span {
   font-size: 0; /* trick to remove inline-element's margin */
@@ -52,3 +63,4 @@ span.active a:after,
 .stars a.active:after{
   color:blue;
 }
+

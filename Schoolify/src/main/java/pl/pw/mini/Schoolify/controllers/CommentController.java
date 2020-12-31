@@ -31,7 +31,6 @@ public class CommentController {
 		CommentResponseWrapper crw = ss.getComments(Long.valueOf(pid));
 		return ResponseEntity.ok(crw);
 	}
-	
 	@PostMapping("/upvote/{commentid}")
 	public void upVoteComment(@PathVariable("commentid") Long id) {
 		ss.upVoteComment(id);

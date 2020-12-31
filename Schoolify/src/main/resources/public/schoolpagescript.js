@@ -66,17 +66,43 @@ function getNStars(n){
     return res;
 }
 
+function getVotingDiv(idComment){
+    var voting = `<div class="column"> <div class="outer" id="vote${idComment}">
+    <div class="inner"><button id="up${idComment}" style="border: 0; background: transparent" onclick="upVoteButton(${idComment})"><img src="upVote.png" width="20" height="20" alt="submit" /></button></div>
+    <div class="inner"><button id="down${idComment}" style="border: 0; background: transparent" onclick="downVoteButton(${idComment})"><img src="downVote.png" width="20" height="20" alt="submit" /></button></div>
+  </div></div>`;
+  return voting;
+}
+
+function upVoteButton(idc){
+    document.getElementById(`up${idc}`).disabled = true;
+    var url = DOMAIN + "/comment/upvote/" + idc;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(null);
+
+}
+
+function downVoteButton(idc){
+    document.getElementById(`down${idc}`).disabled = true;
+    var url = DOMAIN + "/comment/downvote/" + idc;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(null);
+}
+
 
 function generateCommentText(comment){
     var today = new Date();
     var posted = new Date(comment.date);
     var mili = today.getTime() - posted.getTime();
     var daysDiff = Math.floor(mili/(1000*60*60*24));
-    var res = `<div class="row">
-            <div class="col-md-10 username">
-     ` + comment.user + `</div>` + 
-           `<div class="col-md-2">` + getNStars(comment.rate) +
-            `</div>` +
+    var res = getVotingDiv(comment.id) + `<div class="row" id=${comment.id}>` + 
+            `<div class="col-md-10 username">` + comment.user + `</div>` + 
+           `<div class="col-md-2 username">` + getNStars(comment.rate)  + 
+            `</div>` + 
            `<div class="row"> <div class = "col-md-5">`+ `<p style="font-size:10px;"> Opublikowano : ` + daysDiff + ` dni temu.</p>` + 
         `</div>` + 
         `<div class="row"> <div class="col-md-12">`+ comment.content + `</div> </div>`  + '<br>' + '<br>';
