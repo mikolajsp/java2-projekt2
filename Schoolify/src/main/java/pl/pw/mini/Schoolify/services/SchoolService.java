@@ -273,7 +273,8 @@ public class SchoolService {
 	
 	
 	
-	public List<School> filterOutliers2(List<School> res) {
+	public List<School> filterOutliers2(SearchResponseWrapper x) {
+		List<School> res = x.getSchoolList();
 		List<Double> lon = res.stream().map(School::getLocalization).
 				map(Localization::getLon).collect(Collectors.toList());
 		List<Double> lat = res.stream().map(School::getLocalization).
@@ -285,6 +286,7 @@ public class SchoolService {
 			distances.add(s.calculateDistance(meanLat, meanLon));
 		}
 		Double sd = calculateSD(distances);
+		x.setStd(sd);
 		Double mean = calculateAverage(distances);
 		Double rule = 2.0;
 		List<School> filteredSchools = new ArrayList<>();
@@ -352,11 +354,12 @@ public class SchoolService {
 		}else {
 			advancedFilter(allFilters,srw);
 		}
-		List<School> resWithoutOutliers = filterOutliers2(srw.getSchoolList());
+		List<School> resWithoutOutliers = filterOutliers2(srw);
 		Double[] center = calculateCenter(resWithoutOutliers);
 		srw.setSchoolList(resWithoutOutliers);
 		srw.setX_center(center[0]);
 		srw.setY_center(center[1]);
+//		srw.setStd(calculateSD(resWithoutOutliers));
 		if(resWithoutOutliers.size() == 0) {
 			srw.setMinLat(49.0);
 			srw.setMaxLat(54.0);

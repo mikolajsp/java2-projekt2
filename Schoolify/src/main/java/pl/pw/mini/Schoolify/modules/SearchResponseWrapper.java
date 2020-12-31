@@ -13,6 +13,7 @@ public class SearchResponseWrapper {
 	private Double maxLat;
 	private Double originX;
 	private Double originY;
+	private Double std;
 	private String address;
 
 	public String getAddress() {
@@ -80,6 +81,12 @@ public class SearchResponseWrapper {
 	}
 	public void setMostPopular(List<School> mostPopular) {
 		this.mostPopular = mostPopular;
+	}
+	public Double getStd() {
+		return std;
+	}
+	public void setStd(Double std) {
+		this.std = std;
 	}
 	
 	

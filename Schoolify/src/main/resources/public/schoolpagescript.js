@@ -68,12 +68,16 @@ function getNStars(n){
 
 
 function generateCommentText(comment){
+    var today = new Date();
+    var posted = new Date(comment.date);
+    var mili = today.getTime() - posted.getTime();
+    var daysDiff = Math.floor(mili/(1000*60*60*24));
     var res = `<div class="row">
             <div class="col-md-10 username">
      ` + comment.user + `</div>` + 
            `<div class="col-md-2">` + getNStars(comment.rate) +
             `</div>` +
-           `<div class="row"> <div class = "col-md-5">`+  comment.date + 
+           `<div class="row"> <div class = "col-md-5">`+ `<p style="font-size:10px;"> Opublikowano : ` + daysDiff + ` dni temu.</p>` + 
         `</div>` + 
         `<div class="row"> <div class="col-md-12">`+ comment.content + `</div> </div>`  + '<br>' + '<br>';
     return res;

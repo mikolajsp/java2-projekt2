@@ -22,9 +22,6 @@ public class CommentController {
 	
 	@PostMapping("/add")
 	public void addComment(Long schoolId, String content, String username, Integer rate){
-		System.out.println(schoolId);
-		System.out.println(content);
-		System.out.println(username);
 		if(schoolId != null && content != null) {
 			ss.addComment(schoolId, content, username, rate);
 		}

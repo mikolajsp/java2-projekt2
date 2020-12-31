@@ -172,11 +172,22 @@ return       "<div class=\"row\">"+
 
 }
 
+// function calculateZoom(diameter){
+//     console.log("wtf");
+//     var x  = diameter/10000;
+//     var temp = 11.6573*Math.pow(x,5)-70.6343*Math.pow(x,4)+144.887*Math.pow(x,3)-115.001*Math.pow(x,2)+29.9502*x+7.55858;
+//     // var zoom = 11.6573*Math.pow(x,5)−70.6343*Math.pow(x,4)+144.887*Math.pow(x,3)−115.001*Math.pow(x,2)+29.9502*x+7.55858;
+//     console.log(temp);
+//     // return zoom;
+// }
+
+
 
 function changeCenter(schoolResponse){
     var centerlat = schoolResponse.x_center;
     var centerlon = schoolResponse.y_center;
-    mymap.setView([centerlat,centerlon],9);
+    // calculateZoom(schoolResponse.std)
+    mymap.setView([centerlat,centerlon],8);
 }
 
 function setHome(cont){
@@ -198,7 +209,6 @@ function execute() {
     document.getElementById("response").innerHTML = "";
     markers.clearLayers();
     content = requestSchoolList();
-    console.log(content);
     changeCenter(content);
     fillResponseDiv(content.mostPopular);
     placeMarkersOnMap(content);
