@@ -66,7 +66,19 @@ function getNStars(n){
     return res;
 }
 
-function getVotingDiv(idComment){
+function getNBlue(n){
+    var inline = "";
+    for(var i = 0; i < n; i++){
+        inline += "&bigstar;";
+    }
+    var whole = `<p style="font-size: 20px; font-family: 'FontAwesome', serif;color:blue;">`+ inline + `</p>`;
+    console.log(whole);
+    return whole;
+}
+
+function getVotingDiv(com){
+    var idComment = com.id;
+    
     var voting = `<div class="column"> <div class="outer" id="vote${idComment}">
     <div class="inner"><button id="up${idComment}" style="border: 0; background: transparent" onclick="upVoteButton(${idComment})"><img src="upVote.png" width="20" height="20" alt="submit" /></button></div>
     <div class="inner"><button id="down${idComment}" style="border: 0; background: transparent" onclick="downVoteButton(${idComment})"><img src="downVote.png" width="20" height="20" alt="submit" /></button></div>
@@ -99,14 +111,34 @@ function generateCommentText(comment){
     var posted = new Date(comment.date);
     var mili = today.getTime() - posted.getTime();
     var daysDiff = Math.floor(mili/(1000*60*60*24));
-    var res = getVotingDiv(comment.id) + `<div class="row" id=${comment.id}>` + 
-            `<div class="col-md-10 username">` + comment.user + `</div>` + 
-           `<div class="col-md-2 username">` + getNStars(comment.rate)  + 
-            `</div>` + 
-           `<div class="row"> <div class = "col-md-5">`+ `<p style="font-size:10px;"> Opublikowano : ` + daysDiff + ` dni temu.</p>` + 
-        `</div>` + 
-        `<div class="row"> <div class="col-md-12">`+ comment.content + `</div> </div>`  + '<br>' + '<br>';
-    return res;
+    var inline;
+    var val = comment.upVotes-comment.downVotes;
+    if(val > 0){
+        inline = `+${val} punktów`;
+    }else{
+        inline = `${val} punktów`;
+    }
+    var res2 = `<div class="row">
+  <div class="column left">` + 
+    getVotingDiv(comment) + 
+  `</div>
+  <div class="column middle">` + 
+      `<div class="row">` + 
+          `<pre>` + `<b style="font-size:15px;">` + comment.user + 
+          `</b>` + `<span style="font-size:10px;">   ` + inline + `</span>` + `</pre>` +
+        `</div>` +
+    `<div class="row">` + 
+      `<pre style="font-size:10px;">Opublikowano : ` + daysDiff + ` dni temu.</pre>` + 
+    `</div>` + 
+    `<div class="row">` + 
+      `<pre>` + comment.content + `</pre>`+
+    `</div>`+
+  `</div>`+
+  `<div class="column right">` + 
+     getNBlue(comment.rate) + 
+  `</div></div>`;
+  console.log(res2);
+    return res2;
 
 }
 
@@ -133,7 +165,7 @@ function displayComments(commentArray){
 
 function putAvg(avg){
 
-    var txt = "<br> Średnia ocena: <br>" +  getNStars(Math.round(avg));
+    var txt = "<br> Średnia ocena: <br>" +  getNBlue(Math.round(avg));
     var nel = document.createElement('p');
     nel.innerHTML = txt;
     document.getElementById("avg").appendChild(nel);

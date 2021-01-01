@@ -64,3 +64,29 @@ span.active a:after,
   color:blue;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+}
+.left {
+  width: 7%;
+}
+.right{
+	width:15%;
+}
+
+.middle {
+  width: 78%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
