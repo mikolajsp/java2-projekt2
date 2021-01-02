@@ -173,6 +173,15 @@ function createRadar(schoolname,assesment){
     var options = {
             responsive: true,
             maintainAspectRatio: false,
+            scale: {
+            angleLines: {
+                display: false
+            },
+            ticks: {
+                suggestedMin: 0.0,
+                suggestedMax: 5.0
+            }
+        },
         };
     var d = {
     labels: ['Jakość nauczania', 'Przyjazność placówki', 'Konkurencyjność cenowa', 'Rozwój zainteresowań','Dostępność komunikacyjna'],

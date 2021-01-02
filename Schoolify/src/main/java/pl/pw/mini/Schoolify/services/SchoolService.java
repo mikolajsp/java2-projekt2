@@ -194,6 +194,36 @@ public class SchoolService {
 		
 	}
 	
+	public void newVoteSurvey(Long id, Map<String,String> vote) {
+		Assesment schoolAssesment = ar.findById(id).orElse(null);
+		Integer votes = schoolAssesment.getVotes_number();
+		if(votes==0) {
+			votes++;
+		}
+		Double newEducational = (schoolAssesment.getEducational()*votes + Double.parseDouble(vote.get("educational")))/(votes+1);
+		schoolAssesment.setEducational(newEducational);
+		Double newFriendliness = (schoolAssesment.getFriendliness()*votes + Double.parseDouble(vote.get("friendliness")))/(votes+1);
+		schoolAssesment.setFriendliness(newFriendliness);
+		Double newIntrests = (schoolAssesment.getIntrests()*votes + Double.parseDouble(vote.get("intrests")))/(votes+1);
+		schoolAssesment.setIntrests(newIntrests);
+		Double newLowPrice = (schoolAssesment.getLowPrice()*votes + Double.parseDouble(vote.get("lowPrice")))/(votes+1);
+		schoolAssesment.setLowPrice(newLowPrice);
+		Double newCommute = (schoolAssesment.getCommute()*votes + Double.parseDouble(vote.get("commute")))/(votes+1);
+		schoolAssesment.setCommute(newCommute);
+		schoolAssesment.setVotes_number(votes+1);
+		ar.save(schoolAssesment);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static Double calculateSD(List<Double> ld)
     {
         Double sum = 0.0, standardDeviation = 0.0;
