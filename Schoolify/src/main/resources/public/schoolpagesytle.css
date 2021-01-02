@@ -90,3 +90,23 @@ span.active a:after,
   display: table;
   clear: both;
 }
+
+.columnX {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+.columnY1
+{
+  float: left;
+  width: 70%;
+  padding: 5px;
+  height: 50px;
+}
+.columnY2{
+  float: left;
+  width: 30%;
+  padding: 5px;
+  height: 50px;
+}

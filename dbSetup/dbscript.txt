@@ -44,6 +44,22 @@ date DATETIME
 
 
 
+LOAD DATA LOCAL INFILE "/home/pawelf/ZPOiF/School/dbSetup/assesmentTable.csv"
+INTO TABLE assesment
+FIELDS TERMINATED BY ';';
+
+CREATE TABLE assesment (
+id INT PRIMARY KEY,
+educational FLOAT,
+friendliness FLOAT,
+intrests FLOAT,
+lowPrice FLOAT,
+commute FLOAT
+);
+
+
+
+
 
 
 

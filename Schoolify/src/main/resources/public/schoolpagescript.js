@@ -72,7 +72,6 @@ function getNBlue(n){
         inline += "&bigstar;";
     }
     var whole = `<p style="font-size: 20px; font-family: 'FontAwesome', serif;color:blue;">`+ inline + `</p>`;
-    console.log(whole);
     return whole;
 }
 
@@ -137,7 +136,6 @@ function generateCommentText(comment){
   `<div class="column right">` + 
      getNBlue(comment.rate) + 
   `</div></div>`;
-  console.log(res2);
     return res2;
 
 }
@@ -171,15 +169,41 @@ function putAvg(avg){
     document.getElementById("avg").appendChild(nel);
 }
 
+function createRadar(schoolname,assesment){
+    var options = {
+            responsive: true,
+            maintainAspectRatio: false,
+        };
+    var d = {
+    labels: ['Jakość nauczania', 'Przyjazność placówki', 'Konkurencyjność cenowa', 'Rozwój zainteresowań','Dostępność komunikacyjna'],
+    datasets: [{
+        data: [assesment.educational, assesment.friendliness, assesment.lowPrice, assesment.intrests,assesment.commute],
+        backgroundColor: ["rgba(0,0,255,0.3)"], 
+        borderColor: ["rgba(0,0,255,0.5)"],
+        pointBackgroundColor: ["rgba(31, 58, 147, 1)","rgba(31, 58, 147, 1)","rgba(31, 58, 147, 1)","rgba(31, 58, 147, 1)","rgba(31, 58, 147, 1)"],
+        pointRadius: 5,
+        label: schoolname,
+    }],
+};
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myRadarChart = new Chart(ctx, {
+    type: 'radar',
+    data: d,
+    options: options
+    });
 
 
+}
 function main(){
 
     var schoolid = getQueryVariable("schoolid");
+    console.log(schoolid);
     var url = DOMAIN + "/school/id/" + schoolid;
     var school = getschoolinfo(url);
-    document.getElementById("info").innerHTML = createDetailedSchoolDescription(school);
+    console.log(school);
+    document.getElementById("info").innerHTML = createDetailedSchoolDescription(school.school);
     var comments = getComments(schoolid);
+    createRadar(school.school.name, school.assesment);
     var avg = displayComments(comments.comments);
     putAvg(avg);
     

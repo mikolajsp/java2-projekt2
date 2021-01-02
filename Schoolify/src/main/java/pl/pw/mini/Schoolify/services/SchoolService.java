@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +11,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import pl.pw.mini.Schoolify.modules.Assesment;
 import pl.pw.mini.Schoolify.modules.Comment;
 import pl.pw.mini.Schoolify.modules.CommentResponseWrapper;
 import pl.pw.mini.Schoolify.modules.ContentCrossExaminer;
@@ -24,6 +21,7 @@ import pl.pw.mini.Schoolify.modules.Localization;
 import pl.pw.mini.Schoolify.modules.PositionFinder;
 import pl.pw.mini.Schoolify.modules.School;
 import pl.pw.mini.Schoolify.modules.SearchResponseWrapper;
+import pl.pw.mini.Schoolify.repositories.AssesmentRepository;
 import pl.pw.mini.Schoolify.repositories.CommentRepository;
 import pl.pw.mini.Schoolify.repositories.SchoolRepository;
 
@@ -34,6 +32,8 @@ public class SchoolService {
 	SchoolRepository sr;
 	@Autowired
 	CommentRepository cr;
+	@Autowired
+	AssesmentRepository ar;
 	ContentCrossExaminer cce = new ContentCrossExaminer();
 	
 	public List<Comment> allComments(){
@@ -141,6 +141,9 @@ public class SchoolService {
 	
 	public List<Comment> findCommentsById(Long id){
 		return cr.findBySchoolId(id);
+	}
+	public Assesment getAssesmentBySchoolId(Long id) {
+		return ar.findById(id).orElse(null);
 	}
 	
 	

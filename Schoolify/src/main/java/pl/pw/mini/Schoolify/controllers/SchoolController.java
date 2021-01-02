@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pl.pw.mini.Schoolify.modules.Assesment;
 import pl.pw.mini.Schoolify.modules.School;
+import pl.pw.mini.Schoolify.modules.SingleSchoolResponseWrapper;
 import pl.pw.mini.Schoolify.services.SchoolService;
 @CrossOrigin
 @RestController
@@ -22,9 +24,13 @@ public class SchoolController {
 	SchoolService ss;
 
 	@GetMapping("id/{id}")
-	public ResponseEntity<School> schoolById(@PathVariable("id") Long id) {
+	public ResponseEntity<SingleSchoolResponseWrapper> schoolById(@PathVariable("id") Long id) {
 		School sch = ss.findById(id);
-		return ResponseEntity.ok(sch);
+		Assesment a = ss.getAssesmentBySchoolId(id);
+		SingleSchoolResponseWrapper ssrw = new SingleSchoolResponseWrapper();
+		ssrw.setSchool(sch);
+		ssrw.setAssesment(a);
+		return ResponseEntity.ok(ssrw);
 	}
 	@GetMapping("name/{name}")
 	public ResponseEntity<List<School>> schoolByName(@PathVariable("name") String name) {
