@@ -192,8 +192,8 @@ function createRadar(schoolname,assesment){
     options: options
     });
 
-
 }
+
 function main(){
 
     var schoolid = getQueryVariable("schoolid");
