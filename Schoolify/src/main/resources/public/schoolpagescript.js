@@ -21,19 +21,34 @@ function getschoolinfo(url){
 }
 
 function createDetailedSchoolDescription(school) {
-    return "<h4 class=\"mb-3\">"+ school.name +
+
+
+
+    var res = "<h4 class=\"mb-3\">"+ school.name +
         "</h4>" + "<p>"+
-        "Typ: " + school.type + "<br>" +
-        "Województwo: " + school.voivodeship + "<br>" +
-        "Powiat: " + school.county + "<br>" +
-        "Gmina: " + school.community + "<br>" +
-        "Liczba oddziałów: " + school.branches + "<br>" +
-        "Liczba uczniów: " + school.students + "<br>" +
-        "Email: " + school.email + "<br>" +
-        "Telefon: " + school.phoneNumber + "<br>" +
-        "Strona internetowa: <a href=\"https://" + school.website + "\">" + school.website + "</a>" + "<br>" +
-        "Adres: " + school.street + " " + school.houseNumber + ", " + school.town + "<br>"+
-        "</p>"
+        "<b>Typ</b>:  " + school.type + "<br>" +
+        "<b>Województwo</b>:  " + school.voivodeship + "<br>";
+        if(school.county != "-"){
+            res += "<b>Powiat</b>:  " + school.county + "<br>";
+        }
+        if(school.community != "-"){
+            res += "<b>Gmina</b>:  " + school.community + "<br>";
+
+        }
+        if(school.branches != 0){
+            res += "<b>Liczba oddziałów</b>:  " + school.branches + "<br>";
+        }
+        if(school.students != 0){
+            res += "<b>Liczba uczniów</b>:  " + school.students + "<br>";
+        }
+    res +=  "<b>Email:</b>  " + school.email + "<br>" +
+        "<b>Telefon:</b>  " + school.phoneNumber + "<br>" +
+        "<b>Strona internetowa:</b>  <a href=\"https://" + school.website + "\">" + school.website + "</a>" + "<br>" +
+        "<b>Adres:</b>  " + school.street + " " + school.houseNumber + ", " + school.town + "<br>"+
+        "</p>";
+
+    return res;
+
     }
 
 
