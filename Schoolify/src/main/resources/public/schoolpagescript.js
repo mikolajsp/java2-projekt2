@@ -73,13 +73,13 @@ function sendComment(){
     xhr.send(null);
 }
 
-function getNStars(n){
-    var res = ""
-    for(var i = 0; i < n; i++){
-        res += "⭐";
-    }
-    return res;
-}
+// function getNStars(n){
+//     var res = ""
+//     for(var i = 0; i < n; i++){
+//         res += "⭐";
+//     }
+//     return res;
+// }
 
 function getNBlue(n){
     var inline = "";
@@ -219,7 +219,8 @@ function createRadar(schoolname,assesment){
 }
 
 function main(){
-
+  //   window.navigator.geolocation
+  // .getCurrentPosition(console.log, console.log); snippet that gets userlocalization
     var schoolid = getQueryVariable("schoolid");
     console.log(schoolid);
     var url = DOMAIN + "/school/id/" + schoolid;
