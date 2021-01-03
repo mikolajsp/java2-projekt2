@@ -141,7 +141,6 @@ function fillResponseDiv(schoolArray) {
 }
 
 function placeMarkersOnMap(content) {
-     
     var sL = content.schoolList;
     sL.forEach(element => {
         var marker = L.circleMarker([element.lat, element.lon], {
@@ -151,7 +150,6 @@ function placeMarkersOnMap(content) {
         marker.bindPopup(text);
     });
     }
-
 
 function generateSchoolDiv(school){
 return       "<div class=\"row\">"+

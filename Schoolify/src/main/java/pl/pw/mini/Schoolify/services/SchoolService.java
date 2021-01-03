@@ -215,15 +215,6 @@ public class SchoolService {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public static Double calculateSD(List<Double> ld)
     {
         Double sum = 0.0, standardDeviation = 0.0;
@@ -261,34 +252,6 @@ public class SchoolService {
 	}
 	
 	
-	public List<School> filterOutliers(List<School> res) {
-		List<Double> lon = res.stream().map(School::getLocalization).
-				map(Localization::getLon).collect(Collectors.toList());
-		List<Double> lat = res.stream().map(School::getLocalization).
-				map(Localization::getLat).collect(Collectors.toList());
-		Double lonStd = calculateSD(lon);
-		Double latStd = calculateSD(lat);
-		Double meanLon = calculateAverage(lon);
-		Double meanLat = calculateAverage(lat);
-		final Double numberOfStds = 3.0;
-		List<School> resFiltered = res.stream().filter(s->{
-			Localization loc = s.getLocalization();
-			if(loc == null) {
-				return false;
-			}
-			Double slon = loc.getLon();
-			Double slat = loc.getLat();
-			if(slon == null || slat == null) {
-				return false;
-			}
-			return (meanLat + numberOfStds*lonStd  >  slat && slat > meanLat - numberOfStds*lonStd 
-					&& meanLon + numberOfStds*latStd >  slon && slon > meanLon - numberOfStds*latStd );
-}
-		).collect(Collectors.toList());
-		return resFiltered;
-	}
-	
-	
 	public Double calculateDistance(Double lat1,Double lon1,Double lat2,Double lon2) {
 		int R = 6370000; // earth radius
 		double pom = Math.PI/180;
@@ -306,7 +269,7 @@ public class SchoolService {
 	
 	
 	
-	public List<School> filterOutliers2(SearchResponseWrapper x) {
+	public void filterOutliers(SearchResponseWrapper x) {
 		List<School> res = x.getSchoolList();
 		List<Double> lon = res.stream().map(School::getLocalization).
 				map(Localization::getLon).collect(Collectors.toList());
@@ -321,23 +284,18 @@ public class SchoolService {
 		Double sd = calculateSD(distances);
 		x.setStd(sd);
 		Double mean = calculateAverage(distances);
-		Double rule = 2.0;
+		Double rule = 1.2;
 		List<School> filteredSchools = new ArrayList<>();
 		for(int i = 0; i < res.size(); i++) {
 			if(distances.get(i) <= mean + sd*rule && distances.get(i) >= mean - sd*rule ) {
 				filteredSchools.add(res.get(i));
 			}
 		}
-		return filteredSchools;
+		x.setSchoolList(filteredSchools);
 		
 	}
-	
-	
-	
-	
-	
-	
-	
+
+		
 	public Double[] calculateCenter(List<School> res){
 		Double[] positionCenter = new Double[2];
 		List<Double> lonFiltered = res.stream().map(School::getLocalization).
@@ -376,7 +334,25 @@ public class SchoolService {
 		}
 		return res;
 	}
-	
+	public void setCenterUtil(SearchResponseWrapper srw){
+		Double[] center = calculateCenter(srw.getSchoolList());
+		srw.setX_center(center[0]);
+		srw.setY_center(center[1]);
+	}
+	public void setCoordsExtreme(SearchResponseWrapper srw) {
+		if(srw.getSchoolList().size() == 0) {
+			srw.setMinLat(49.0);
+			srw.setMaxLat(54.0);
+			srw.setMinLon(14.0);
+			srw.setMaxLon(24.0);
+		}else {
+			Double[] extrems = extremsLonLat(srw.getSchoolList());
+			srw.setMinLat(extrems[0]);
+			srw.setMaxLat(extrems[1]);
+			srw.setMinLon(extrems[2]);
+			srw.setMaxLon(extrems[3]);
+		}
+	}
 		
 	public SearchResponseWrapper search(Map<String, String> allFilters){
 		SearchResponseWrapper srw = new SearchResponseWrapper();
@@ -387,78 +363,17 @@ public class SchoolService {
 		}else {
 			advancedFilter(allFilters,srw);
 		}
-		List<School> resWithoutOutliers = filterOutliers2(srw);
-		Double[] center = calculateCenter(resWithoutOutliers);
-		srw.setSchoolList(resWithoutOutliers);
-		srw.setX_center(center[0]);
-		srw.setY_center(center[1]);
-//		srw.setStd(calculateSD(resWithoutOutliers));
-		if(resWithoutOutliers.size() == 0) {
-			srw.setMinLat(49.0);
-			srw.setMaxLat(54.0);
-			srw.setMinLon(14.0);
-			srw.setMaxLon(24.0);
-		}else {
-			Double[] extrems = extremsLonLat(resWithoutOutliers);
-			srw.setMinLat(extrems[0]);
-			srw.setMaxLat(extrems[1]);
-			srw.setMinLon(extrems[2]);
-			srw.setMaxLon(extrems[3]);
-		}
-		srw.setMostPopular(mostPopular(resWithoutOutliers,10));
+		filterOutliers(srw);
+		setCenterUtil(srw);
+		setCoordsExtreme(srw);
+		setMostPopular(srw,10);
 		return srw;
 	}
 	
-	
-//	public void calcateMissingCoords() {
-//		cleanCrap();
-//		List<School> schools = sr.findAll();
-//		List<School> to_add = schools.stream().
-//		filter( x ->
-//		x.getLocalization().getLat() == 0.0 || x.getLocalization().getLon() == 0.0).
-//		collect(Collectors.toList());
-////		List<School> to_add = schools.stream().
-////		filter( x ->
-////		x.getId() >= 55181).
-////		collect(Collectors.toList());
-//		for(School s : to_add) {
-//			String point = s.getLocalization().getStreet()+ " " + s.getLocalization().getHouseNumber() + ", " + s.getLocalization().getTown() ;
-//			Double position[] = PositionFinder.findLonLat(point);
-//			Localization loc = s.getLocalization();
-//			loc.setLat(position[1]);
-//			loc.setLon(position[0]);
-//			s.setLocalization(loc);
-//		}
-//		sr.saveAll(to_add);
-//	}
-	
-	
-	public void fixLinks() {
-		List<School> s = sr.findAll();
-		List<School> withWebsites = s.stream().filter(x -> x.getContact() != null && x.getContact().getWebsite() != null).collect(Collectors.toList());
-		List<School> badLinks = withWebsites.stream().filter(x -> x.getContact().getWebsite().startsWith("://")).
-					collect(Collectors.toList());
-		for(School sx : badLinks) {
-				String web = sx.getContact().getWebsite();
-				sx.getContact().setWebsite(web.substring(3));
-		}
-		sr.saveAll(badLinks);
-	}
 
-	public List<School> mostPopular(List<School> selected, Integer n){
-		List<School> by_pop = selected.stream().sorted(Comparator.comparingInt(s -> -s.getPopularity())).collect(Collectors.toList());
-		return by_pop.subList(Math.max(0, by_pop.size()- n) , by_pop.size());
+	public void setMostPopular(SearchResponseWrapper srw, Integer n){
+		List<School> byPop = srw.getSchoolList().stream().sorted(Comparator.comparingInt(s -> -s.getPopularity())).collect(Collectors.toList());
+		srw.setMostPopular(byPop.subList(Math.max(0, byPop.size()- n) , byPop.size()));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }
