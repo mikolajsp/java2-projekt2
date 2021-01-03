@@ -243,6 +243,7 @@ function hideModal(){
 }
 
 function sendSurvey(){
+    var schoolid = getQueryVariable("schoolid");
     var qual = document.getElementById("qual").value;
     var frien = document.getElementById("frien").value;
     var pric= document.getElementById("pric").value;
@@ -251,8 +252,8 @@ function sendSurvey(){
 
 
     var xhr = new XMLHttpRequest();
-    var params = "?id="+schoolid+"&educational=" + qual + +"&freindliness=" + frien +"&lowPrice=" + pric +"&intrests=" + intr +"&commute=" + comm
-    xhr.open("POST", DOMAIN+"/comment/add"+params, true);
+    var params = "?id="+schoolid+"&educational=" + qual +"&friendliness=" + frien +"&lowPrice=" + pric +"&intrests=" + intr +"&commute=" + comm
+    xhr.open("POST", DOMAIN+"/school/survey"+params, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(null);
 
