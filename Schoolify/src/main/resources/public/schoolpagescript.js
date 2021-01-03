@@ -232,3 +232,30 @@ function main(){
     putAvg(avg);
     
 }
+
+function launchModal(){
+    $('#surveyModal').modal('show')
+}
+
+function hideModal(){
+    $('#surveyModal').modal('hide')
+}
+
+function sendSurvey(){
+    var qual = document.getElementById("qual").value;
+    var frien = document.getElementById("frien").value;
+    var pric= document.getElementById("pric").value;
+    var intr= document.getElementById("intr").value;
+    var comm= document.getElementById("comm").value;
+
+
+    var xhr = new XMLHttpRequest();
+    var params = "?id="+schoolid+"&educational=" + qual + +"&freindliness=" + frien +"&lowPrice=" + pric +"&intrests=" + intr +"&commute=" + comm
+    xhr.open("POST", DOMAIN+"/comment/add"+params, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(null);
+
+
+
+    hideModal();
+}

@@ -18,16 +18,16 @@
         <a class="navbar-brand" href="http://localhost:8080/index.html">Schoolify</a>
     </nav>
 
+
     <div id="container" class="container bootstrap">
         <div class="row">
-            <div class="col-md-8 mb-3" id="info">
+            <div class="col-md-4 mb-3" id="info">
             </div>
-            <div id="chart-container" class="col-md-4 mb-3">
-                <div id="chart" style="text-align: center;">=
+            <div id="chart-container" class="col-md-8 mb-3">
+                <div id="chart" style="text-align: center;">
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
                     <canvas id="myChart" width="200" height="200"></canvas>
-                    <button type="button" class="btn btn-primary btn-lg btn-block mb-4"
-                    data-toggle="modal" data-target="#exampleModal">Wypełnij ankietę</button>
+                    <button type="button" class="btn btn-primary btn-lg btn-block mb-4" onclick="launchModal()">Wypełnij ankietę</button>
                 </div>
             </div>
         </div>
@@ -77,10 +77,51 @@
         <div id="comments" class="row">
         </div>
     </div>
-    <script src="schoolpagescript.js"></script>
+
+    <div class="modal fade" id="surveyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Opinia na temat szkołu</h5>
+            </div>
+            <div class="modal-body">
+              
+                <div id="quality">
+                    Jakość nauczania: <input type="number" class="form-control" id="qual">
+                </div>
+                <div id="quality">
+                    Przyjazność placówki: <input type="number" class="form-control" id="frien">
+                </div>
+                <div id="quality">
+                    Konkurencyjność cenowa: <input type="number" class="form-control" id="pric">
+                </div>
+                <div id="quality">
+                    Rozwój zainteresowań: <input type="number" class="form-control" id="intr">
+                </div>
+                <div id="quality">
+                    Dostępność komunikacyjna: <input type="number" class="form-control" id="comm">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" onclick="hideModal()">Zamknij</button>
+              <button type="button" class="btn btn-primary" onclick="sendSurvey()">Wyślij głosy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <script src="schoolpagescript.js" > </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
+
+
+
+
+
+
 </body>
 
 </html>
