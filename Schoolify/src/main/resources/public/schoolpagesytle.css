@@ -11,26 +11,50 @@ body{
     font-weight: bold;
 }
 
-.stars input {
-    position: absolute;
-    left: -999999px;
+rating { 
+  border: none;
+  float: left;
+  margin:0px 0px 0px 10px;
 }
 
-.stars a {
-    display: inline-block;
-    padding-right:4px;
-    text-decoration: none;
-    margin:0;
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin-top: 2px;
+  padding:0px 5px 0px 5px;
+  font-size: 1.0em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
 }
 
-.stars a:after {
-    position: relative;
-    font-size: 18px;
-    font-family: 'FontAwesome', serif;
-    display: block;
-    content: "\f005";
-    color: #9e9e9e;
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
 }
+
+.rating > label { 
+	color: #fff; 
+	float: right;
+	margin:0px 1px 0px 0px;
+	background-color:#D8D8D8;
+	border-radius:15px;
+  height:25px;
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { 
+	background-color:#0000FF !important;
+  cursor:pointer;
+} /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { 
+	background-color:#0000FF !important;
+  cursor:pointer;
+} 
 
 #outer
 {
@@ -48,21 +72,6 @@ span {
   font-size: 0; /* trick to remove inline-element's margin */
 }
 
-.stars a:hover ~ a:after{
-  color: #9e9e9e !important;
-}
-span.active a.active ~ a:after{
-  color: #9e9e9e;
-}
-
-span:hover a:after{
-  color:blue !important;
-}
-
-span.active a:after,
-.stars a.active:after{
-  color:blue;
-}
 
 * {
   box-sizing: border-box;

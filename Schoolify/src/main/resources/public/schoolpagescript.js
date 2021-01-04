@@ -64,7 +64,7 @@ function getComments(id){
 function sendComment(){
     var content = document.getElementById("comment").value 
     var user = document.getElementById("username").value 
-    var rate = parseInt(document.getElementsByClassName("active")[1].innerHTML);
+    var rate = getValueOfStars(1);
     var schoolid = parseInt(getQueryVariable("schoolid"))
     var xhr = new XMLHttpRequest();
     var params = "?schoolId="+schoolid+"&content=" + content + "&username=" + user + "&rate=" + rate;
@@ -242,22 +242,47 @@ function hideModal(){
     $('#surveyModal').modal('hide')
 }
 
+
+function getScore(){
+
+$("label").click(function(){
+  $(this).parent().find("label").css({"background-color": "#D8D8D8"});
+  $(this).css({"background-color": "#0000FF"});
+  $(this).nextAll().css({"background-color": "#0000FF"});
+});
+}
+
+function getValueOfStars(field_number){
+    var f = `field${field_number}_star`;
+    for(var i = 1; i <= 5; i++){
+        if(document.getElementById(f+i).checked){
+            return i;
+        }
+    }
+    return -1;
+}
+
 function sendSurvey(){
     var schoolid = getQueryVariable("schoolid");
-    var qual = document.getElementById("qual").value;
-    var frien = document.getElementById("frien").value;
-    var pric= document.getElementById("pric").value;
-    var intr= document.getElementById("intr").value;
-    var comm= document.getElementById("comm").value;
-
-
-    var xhr = new XMLHttpRequest();
-    var params = "?id="+schoolid+"&educational=" + qual +"&friendliness=" + frien +"&lowPrice=" + pric +"&intrests=" + intr +"&commute=" + comm
-    xhr.open("POST", DOMAIN+"/school/survey"+params, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(null);
-
-
-
-    hideModal();
+    var qual = getValueOfStars(2);
+    var frien = getValueOfStars(3);
+    var pric= getValueOfStars(4);
+    var intr= getValueOfStars(5);
+    var comm= getValueOfStars(6);
+    if(qual == -1 || frien == -1 || pric == -1 || intr == -1 || comm == -1){
+        alert("Zaznacz wszystkie kategorie!");
+    }else{
+        console.log(qual);
+        console.log(frien);
+        console.log(pric);
+        console.log(intr);
+        console.log(comm);
+        var xhr = new XMLHttpRequest();
+        var params = "?id="+schoolid+"&educational=" + qual +"&friendliness=" + frien +"&lowPrice=" + pric +"&intrests=" + intr +"&commute=" + comm
+        xhr.open("POST", DOMAIN+"/school/survey"+params, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(null);
+        hideModal();
+    }
+   
 }

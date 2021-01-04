@@ -26,8 +26,10 @@
             <div id="chart-container" class="col-md-8 mb-3">
                 <div id="chart" style="text-align: center;">
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
-                    <canvas id="myChart" width="200" height="200"></canvas>
-                    <button type="button" class="btn btn-primary btn-lg btn-block mb-4" onclick="launchModal()">Wypełnij ankietę</button>
+                    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+                        <canvas id="myChart"></canvas>
+                        <button type="button" class="btn btn-outline-primary mb-5" onclick="launchModal()">Wypełnij ankietę</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,24 +44,17 @@
                         <input type="text" id="username" class="form-control" placeholder="Nazwa użytkownika">
                     </div>
                     <div class="col-md-4 mb-3">
-
-                        <p class="stars">
-                            <span id="test">
-                                <a class="star-1" href="#">1</a>
-                                <a class="star-2" href="#">2</a>
-                                <a class="star-3" href="#">3</a>
-                                <a class="star-4" href="#">4</a>
-                                <a class="star-5" href="#">5</a>
-                                <script>
-                                    $('.stars a').on('click', function () {
-                                        $('.stars span, .stars a').removeClass('active');
-
-                                        $(this).addClass('active');
-                                        $('.stars span').addClass('active');
-                                    });
-                                </script>
-                            </span>
-                        </p>
+                            <fieldset class="rating" onclick="getScore();">
+                                <input type="radio" id="field1_star5" name="rating1" value="5" /><label class = "full" for="field1_star5"></label>
+                                
+                                <input type="radio" id="field1_star4" name="rating1" value="4" /><label class = "full" for="field1_star4"></label>
+                                
+                                <input type="radio" id="field1_star3" name="rating1" value="3" /><label class = "full" for="field1_star3"></label>
+                                
+                                <input type="radio" id="field1_star2" name="rating1" value="2" /><label class = "full" for="field1_star2"></label>
+                                
+                                <input type="radio" id="field1_star1" name="rating1" value="1" /><label class = "full" for="field1_star1"></label>
+                            </fieldset>
                     </div>
                 </div>
                 <div class="row" id="form-group">
@@ -82,30 +77,84 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Opinia na temat szkołu</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Opinia na temat placówki</h5>
             </div>
             <div class="modal-body">
-              
-                <div id="quality">
-                    Jakość nauczania: <input type="number" class="form-control" id="qual">
+                <div>
+                    Jakość nauczania:
+                     <fieldset class="rating" id="qual" onclick="getScore();">
+                                <input type="radio" id="field2_star5" name="rating2" value="5" /><label class = "full" for="field2_star5"></label>
+                                
+                                <input type="radio" id="field2_star4" name="rating2" value="4" /><label class = "full" for="field2_star4"></label>
+                                
+                                <input type="radio" id="field2_star3" name="rating2" value="3" /><label class = "full" for="field2_star3"></label>
+                                
+                                <input type="radio" id="field2_star2" name="rating2" value="2" /><label class = "full" for="field2_star2"></label>
+                                
+                                <input type="radio" id="field2_star1" name="rating2" value="1" /><label class = "full" for="field2_star1"></label>
+                            </fieldset>
                 </div>
-                <div id="quality">
-                    Przyjazność placówki: <input type="number" class="form-control" id="frien">
+                <div>
+                    Przyjazność placówki:
+                    <fieldset class="rating" id="frien" onclick="getScore();">
+                                <input type="radio" id="field3_star5" name="rating3" value="5" /><label class = "full" for="field3_star5"></label>
+                                
+                                <input type="radio" id="field3_star4" name="rating3" value="4" /><label class = "full" for="field3_star4"></label>
+                                
+                                <input type="radio" id="field3_star3" name="rating3" value="3" /><label class = "full" for="field3_star3"></label>
+                                
+                                <input type="radio" id="field3_star2" name="rating3" value="2" /><label class = "full" for="field3_star2"></label>
+                                
+                                <input type="radio" id="field3_star1" name="rating3" value="1" /><label class = "full" for="field3_star1"></label>
+                            </fieldset>
                 </div>
-                <div id="quality">
-                    Konkurencyjność cenowa: <input type="number" class="form-control" id="pric">
+                <div>
+                    Konkurencyjność cenowa:
+                  <fieldset class="rating" id="pric" onclick="getScore();">
+                                <input type="radio" id="field4_star5" name="rating4" value="5" /><label class = "full" for="field4_star5"></label>
+                                
+                                <input type="radio" id="field4_star4" name="rating4" value="4" /><label class = "full" for="field4_star4"></label>
+                                
+                                <input type="radio" id="field4_star3" name="rating4" value="3" /><label class = "full" for="field4_star3"></label>
+                                
+                                <input type="radio" id="field4_star2" name="rating4" value="2" /><label class = "full" for="field4_star2"></label>
+                                
+                                <input type="radio" id="field4_star1" name="rating4" value="1" /><label class = "full" for="field4_star1"></label>
+                            </fieldset>
                 </div>
-                <div id="quality">
-                    Rozwój zainteresowań: <input type="number" class="form-control" id="intr">
+                <div>
+                    Rozwój zainteresowań:
+                          <fieldset class="rating" id="intr" onclick="getScore();">
+                                <input type="radio" id="field5_star5" name="rating5" value="5" /><label class = "full" for="field5_star5"></label>
+                                
+                                <input type="radio" id="field5_star4" name="rating5" value="4" /><label class = "full" for="field5_star4"></label>
+                                
+                                <input type="radio" id="field5_star3" name="rating5" value="3" /><label class = "full" for="field5_star3"></label>
+                                
+                                <input type="radio" id="field5_star2" name="rating5" value="2" /><label class = "full" for="field5_star2"></label>
+                                
+                                <input type="radio" id="field5_star1" name="rating5" value="1" /><label class = "full" for="field5_star1"></label>
+                            </fieldset>
                 </div>
-                <div id="quality">
-                    Dostępność komunikacyjna: <input type="number" class="form-control" id="comm">
+                <div>
+                    Dostępność komunikacyjna:
+                 <fieldset class="rating" id="comm" onclick="getScore();">
+                                <input type="radio" id="field6_star5" name="rating6" value="5" /><label class = "full" for="field6_star5"></label>
+                                
+                                <input type="radio" id="field6_star4" name="rating6" value="4" /><label class = "full" for="field6_star4"></label>
+                                
+                                <input type="radio" id="field6_star3" name="rating6" value="3" /><label class = "full" for="field6_star3"></label>
+                                
+                                <input type="radio" id="field6_star2" name="rating6" value="2" /><label class = "full" for="field6_star2"></label>
+                                
+                                <input type="radio" id="field6_star1" name="rating6" value="1" /><label class = "full" for="field6_star1"></label>
+                            </fieldset>
                 </div>
 
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" onclick="hideModal()">Zamknij</button>
-              <button type="button" class="btn btn-primary" onclick="sendSurvey()">Wyślij głosy</button>
+              <button type="button" class="btn btn-primary" onclick="sendSurvey()">Oddaj głos</button>
             </div>
           </div>
         </div>
