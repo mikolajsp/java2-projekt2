@@ -73,22 +73,6 @@ function sendComment(){
     xhr.send(null);
 }
 
-// function getNStars(n){
-//     var res = ""
-//     for(var i = 0; i < n; i++){
-//         res += "⭐";
-//     }
-//     return res;
-// }
-
-function getNBlue(n){
-    var inline = "";
-    for(var i = 0; i < n; i++){
-        inline += "&bigstar;";
-    }
-    var whole = `<p style="font-size: 20px; font-family: 'FontAwesome', serif;color:blue;">`+ inline + `</p>`;
-    return whole;
-}
 
 function getVotingDiv(com){
     var idComment = com.id;
@@ -184,39 +168,6 @@ function putAvg(avg){
     document.getElementById("avg").appendChild(nel);
 }
 
-function createRadar(schoolname,assesment){
-    var options = {
-            responsive: true,
-            maintainAspectRatio: false,
-            scale: {
-            angleLines: {
-                display: false
-            },
-            ticks: {
-                suggestedMin: 0.0,
-                suggestedMax: 5.0
-            }
-        },
-        };
-    var d = {
-    labels: ['Jakość nauczania', 'Przyjazność placówki', 'Konkurencyjność cenowa', 'Rozwój zainteresowań','Dostępność komunikacyjna'],
-    datasets: [{
-        data: [assesment.educational, assesment.friendliness, assesment.lowPrice, assesment.intrests,assesment.commute],
-        backgroundColor: ["rgba(0,0,255,0.3)"], 
-        borderColor: ["rgba(0,0,255,0.5)"],
-        pointBackgroundColor: ["rgba(31, 58, 147, 1)","rgba(31, 58, 147, 1)","rgba(31, 58, 147, 1)","rgba(31, 58, 147, 1)","rgba(31, 58, 147, 1)"],
-        pointRadius: 5,
-        label: schoolname,
-    }],
-};
-    var ctx = document.getElementById("myChart").getContext("2d");
-    var myRadarChart = new Chart(ctx, {
-    type: 'radar',
-    data: d,
-    options: options
-    });
-
-}
 
 function main(){
   //   window.navigator.geolocation
@@ -228,7 +179,7 @@ function main(){
     console.log(school);
     document.getElementById("info").innerHTML = createDetailedSchoolDescription(school.school);
     var comments = getComments(schoolid);
-    createRadar(school.school.name, school.assesment);
+    createRadar(school.school.name, school.assesment,"myChart");
     var avg = displayComments(comments.comments);
     putAvg(avg);
     

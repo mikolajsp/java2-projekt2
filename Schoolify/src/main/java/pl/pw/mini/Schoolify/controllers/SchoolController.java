@@ -34,6 +34,10 @@ public class SchoolController {
 		ssrw.setAssesment(a);
 		return ResponseEntity.ok(ssrw);
 	}
+	@GetMapping("/ids/{schoolIDS}")
+	public ResponseEntity<List<SingleSchoolResponseWrapper>> schoolsByIds(@PathVariable List<Long> schoolIDS){
+		return ResponseEntity.ok(ss.schoolsByIds(schoolIDS));
+	}
 	@GetMapping("name/{name}")
 	public ResponseEntity<List<School>> schoolByName(@PathVariable("name") String name) {
 		List<School> sch = ss.findByName(name);

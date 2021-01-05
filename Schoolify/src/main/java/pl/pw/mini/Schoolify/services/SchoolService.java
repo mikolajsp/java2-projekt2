@@ -3,6 +3,7 @@ package pl.pw.mini.Schoolify.services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +22,7 @@ import pl.pw.mini.Schoolify.modules.Localization;
 import pl.pw.mini.Schoolify.modules.PositionFinder;
 import pl.pw.mini.Schoolify.modules.School;
 import pl.pw.mini.Schoolify.modules.SearchResponseWrapper;
+import pl.pw.mini.Schoolify.modules.SingleSchoolResponseWrapper;
 import pl.pw.mini.Schoolify.repositories.AssesmentRepository;
 import pl.pw.mini.Schoolify.repositories.CommentRepository;
 import pl.pw.mini.Schoolify.repositories.SchoolRepository;
@@ -84,6 +86,20 @@ public class SchoolService {
 		srw.setSchoolList(res);
 		}
 	
+	public List<SingleSchoolResponseWrapper> schoolsByIds(Iterable<Long> ids){
+		List<School> ls = sr.findAllById(ids);
+		List<SingleSchoolResponseWrapper> ssrwL = new ArrayList<>();
+		for(School s: ls) {
+			SingleSchoolResponseWrapper ssrw = new SingleSchoolResponseWrapper();
+			ssrw.setSchool(s);
+			ssrw.setAssesment(getAssesmentBySchoolId(s.getId()));
+			ssrw.setAvg(avgRate(s.getId()));
+			ssrw.setBestComment(bestComment(s.getId()));
+			ssrwL.add(ssrw);
+		}
+		return ssrwL;
+	}
+	
 	public void advancedFilter(Map<String,String> allFilters,SearchResponseWrapper srw){
 		simpleFilter(allFilters,srw);
 		List <School> res = srw.getSchoolList();
@@ -144,6 +160,21 @@ public class SchoolService {
 	}
 	public Assesment getAssesmentBySchoolId(Long id) {
 		return ar.findById(id).orElse(null);
+	}
+	
+	public Integer avgRate(Long id) {
+		List<Comment> lc = findCommentsById(id);
+		if(lc.size() == 0) {
+			return 0;
+		}
+		Integer sum = lc.stream().map(c->c.getRate()).reduce(0, Integer::sum)/lc.size();
+		return sum;
+	}
+	public Comment bestComment(Long id) {
+		List<Comment> lc = findCommentsById(id);
+        Comment bc =  Collections.max(lc, Comparator.comparing(s -> s.getUpVotes() - s.getDownVotes()));
+        return bc;
+
 	}
 	
 	
