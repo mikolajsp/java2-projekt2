@@ -172,6 +172,9 @@ public class SchoolService {
 	}
 	public Comment bestComment(Long id) {
 		List<Comment> lc = findCommentsById(id);
+		if(lc.size() == 0) {
+			return null;
+		}
         Comment bc =  Collections.max(lc, Comparator.comparing(s -> s.getUpVotes() - s.getDownVotes()));
         return bc;
 

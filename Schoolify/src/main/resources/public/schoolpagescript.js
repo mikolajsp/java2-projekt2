@@ -170,8 +170,6 @@ function putAvg(avg){
 
 
 function main(){
-  //   window.navigator.geolocation
-  // .getCurrentPosition(console.log, console.log); snippet that gets userlocalization
     var schoolid = getQueryVariable("schoolid");
     console.log(schoolid);
     var url = DOMAIN + "/school/id/" + schoolid;
@@ -192,6 +190,7 @@ function launchModal(){
 function hideModal(){
     $('#surveyModal').modal('hide')
 }
+
 
 
 function getScore(){

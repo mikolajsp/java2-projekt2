@@ -38,5 +38,10 @@ body{
     /* width: 800px; */
 } 
 
+a{
+    text-decoration:none;
+}
 
-
+.btn-outline-primary{
+    font-size:13px;
+}

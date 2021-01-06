@@ -169,14 +169,21 @@
                     <hr class="mb-4">
                     <!-- <div class="form-group row"> -->
                     <button type="button" class="col-md-12 btn btn-primary btn-lg btn-block mb-4"
-                        onclick="execute();">Wyszukaj</button>
+                        onclick="execute();">Wyszukaj <img src="search.png" width="25" height="25"></img></button>
                     <!-- </div> -->
                 </form>
-
+                <div class="col-md-10 mb-3">
                 <div id="mapcontainer" class="row mb-4">
                     <div class="col-md-2"></div>
                     <div id="mapid" class="col-md-8"></div>
                     <div class="col-md-2"></div>
+                </div>
+                <button class="btn btn-outline-secondary btn-md" onclick="linkCompare();">
+                    <a id="goCompare" href="#link">Przejdź do porównania 
+                        <img src="comp.png" width="25" height="25"></img>
+                    </a> 
+                </button>
+                
                 </div>
             </div>
             
@@ -188,6 +195,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
+    <script src= 'https://code.jquery.com/jquery-3.4.1.min.js'></script>
+    <script>
+        $('#goCompare').click(function(){
+        var schoolToCompare = document.getElementsByClassName('active');
+        console.log(schoolToCompare);
+        var str = "";
+        for(var i = 0; i < schoolToCompare.length; i++){
+            str += schoolToCompare[i].id.slice(13) + "&";
+        }
+        $(this).attr("href", "compare.html?" + str);
+        });
+    </script>
 
 </body>
 

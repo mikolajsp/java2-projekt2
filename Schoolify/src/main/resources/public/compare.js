@@ -3,6 +3,7 @@ var distsGlobal = new Array;
 
 function getSchoolsToCompare(){
 	var param = window.location.search.substring(1);
+	console.log(param);
 	var ids = param.split("&");
 	var url = DOMAIN + "/school/ids/" + ids.join();
 	console.log(url);
@@ -138,8 +139,14 @@ function makeOpinionRow(schools,n){
 	for(var i = 0; i < n; i++){
 		var nextCol = document.createElement("td");
 		var s = schools[i];
-		nextCol.innerHTML =  s.bestComment.content + "<br>" + "<pre style=\"text-align: right;\">"+"<img src=upVote.png width=\"20\" height=\"20\" >  "+ s.bestComment.upVotes +"</img>"
+		var str;
+		if(s.bestComment == null){
+			nextCol.innerHTML = "<br><p>Brak opinii.</p>";
+		}else{
+			nextCol.innerHTML =  s.bestComment.content + "<br>" + "<pre style=\"text-align: right;\">"+"<img src=upVote.png width=\"20\" height=\"20\" >  "+ s.bestComment.upVotes +"</img>"
 		+ "  <img src=downVote.png width=\"20\" height=\"20\">  " + s.bestComment.downVotes +"  </img>" + "</pre>";
+		}
+		
 		thisRow.appendChild(nextCol);
 	}
 }

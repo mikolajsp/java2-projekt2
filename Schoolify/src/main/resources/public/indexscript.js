@@ -1,6 +1,10 @@
 
 var DOMAIN = "http://localhost:8080";
 
+
+var COMPARE = [];
+
+
 var mymap = L.map('mapid', {
     preferCanvas: true
 }).setView([52, 19], 6);
@@ -109,10 +113,22 @@ function createSchoolDescription(school) {
         "Email: " + school.email + "<br>" +
         "Telefon: " + school.phoneNumber + "<br>" +
         "Strona internetowa: <a href=\"https://" + school.website + "\">" + school.website + "</a>" + "<br>" +
-        "Adres: " + school.street + " " + school.houseNumber + ", " + school.town + "<br><br>" +
-        "<a href =\"schoolpage.html?schoolid="+ school.id + "\">Więcej >> </a>" ;
+        "Adres: " + school.street + " " + school.houseNumber + ", " + school.town + "<br><br>";
 }
 
+
+
+
+function showGreen(id){
+    var toCompare = document.getElementById(`buttonCompare${id}`);
+    var greenShow = document.createElement("img");
+    greenShow.src = "greenTick.png";
+    greenShow.width = 30;
+    greenShow.heigth = 30;
+    toCompare.appendChild(greenShow);
+    COMPARE.push(id);
+    toCompare.disabled = true;
+}
 
 function createSchoolDescriptionBasic(school) {
     return 
@@ -140,16 +156,49 @@ function fillResponseDiv(schoolArray) {
 
 }
 
+
+function makeMore(id){
+    var more = document.createElement("a");
+    more.classList.add("btn");
+    more.classList.add("btn-outline-primary");
+    more.role = "button";
+    more.href = `schoolpage.html?schoolid=` + id;
+    more.innerHTML = "Więcej";
+    return more;
+}
+
+function makeComp(id){
+    var comp = document.createElement("button");
+    comp.classList.add("compareButton");
+    comp.classList.add("btn");
+    comp.classList.add("btn-outline-primary");
+    comp.classList.add("btn-md");
+    comp.id = `buttonCompare${id}`;
+    comp.addEventListener('click', function(){
+        showGreen(id);
+    });
+    comp.onclick = "showGreen(this.id)";
+    comp.innerHTML = "Dodaj do porównania";
+    return comp;
+}
+
 function placeMarkersOnMap(content) {
     var sL = content.schoolList;
     sL.forEach(element => {
         var marker = L.circleMarker([element.lat, element.lon], {
             radius: 7
         }).addTo(markers);
-        var text = createSchoolDescription(element);
-        marker.bindPopup(text);
+        var popupDIV = document.createElement("div");
+        popupDIV.innerHTML = createSchoolDescription(element);
+        popupDIV.appendChild(makeMore(element.id));
+        popupDIV.appendChild(makeComp(element.id));
+        marker.bindPopup(popupDIV);
     });
     }
+
+
+
+
 
 function generateSchoolDiv(school){
 return       "<div class=\"row\">"+
@@ -170,21 +219,22 @@ return       "<div class=\"row\">"+
 
 }
 
-// function calculateZoom(diameter){
-//     console.log("wtf");
-//     var x  = diameter/10000;
-//     var temp = 11.6573*Math.pow(x,5)-70.6343*Math.pow(x,4)+144.887*Math.pow(x,3)-115.001*Math.pow(x,2)+29.9502*x+7.55858;
-//     // var zoom = 11.6573*Math.pow(x,5)−70.6343*Math.pow(x,4)+144.887*Math.pow(x,3)−115.001*Math.pow(x,2)+29.9502*x+7.55858;
-//     console.log(temp);
-//     // return zoom;
-// }
+function linkCompare(){
+    var b = document.getElementById("goCompare");
+    var str = "";
+    for(var i = 0; i < COMPARE.length; i++){
+        str += COMPARE[i] + ",";
+    }
+    b.href = "compare.html?" + str;
+    console.log(b.href);
+    return true;
+}
 
 
 
 function changeCenter(schoolResponse){
     var centerlat = schoolResponse.x_center;
     var centerlon = schoolResponse.y_center;
-    // calculateZoom(schoolResponse.std)
     mymap.setView([centerlat,centerlon],8);
 }
 
@@ -214,7 +264,6 @@ function execute() {
         setHome(content);
     }
     mymap.addLayer(markers);
-
 
 }
 
