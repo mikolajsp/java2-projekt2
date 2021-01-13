@@ -17,7 +17,7 @@ Bardzo pobieżny opis struktury projektu:
 5. ~~Wyświetlanie odpowiedzi z serwera.~~
 6. ~~Logika biznesowa aplikacji. (m. in. filtrowanie po stronie backendu, wybieranie odpowiednich rekordów z bazy)~~
 7. ~~Geolokalizacja szkół (wyznaczenie współrzędnych na podstawie adresu).~~
-8. System wystawiania opinii.
+8. ~System wystawiania opinii.~
 9. ~~Wyświetlanie szkół na mapie.~~
 10. ~~Pełna informacja o szkole po kliknięciu na mapie.~~
 
