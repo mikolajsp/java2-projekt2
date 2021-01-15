@@ -26,11 +26,11 @@ public class CommentController {
 			ss.addComment(schoolId, content, username, rate);
 		}
 	}	
-	@GetMapping("/pid/{pid}")
-	public ResponseEntity<CommentResponseWrapper> getCommentsForSchoolId(@PathVariable("pid") Integer pid){
-		CommentResponseWrapper crw = ss.getComments(Long.valueOf(pid));
-		return ResponseEntity.ok(crw);
-	}
+//	@GetMapping("/pid/{pid}")
+//	public ResponseEntity<CommentResponseWrapper> getCommentsForSchoolId(@PathVariable("pid") Integer pid){
+//		CommentResponseWrapper crw = ss.getComments(Long.valueOf(pid));
+//		return ResponseEntity.ok(crw);
+//	}
 	@PostMapping("/upvote/{commentid}")
 	public void upVoteComment(@PathVariable("commentid") Long id) {
 		ss.upVoteComment(id);

@@ -2,7 +2,6 @@ package pl.pw.mini.Schoolify.modules;
 
 public class SingleSchoolResponseWrapper {
 	private School school;
-	private Assesment assesment;
 	private Integer avg;
 	private Comment bestComment;
 	public School getSchool() {
@@ -10,12 +9,6 @@ public class SingleSchoolResponseWrapper {
 	}
 	public void setSchool(School school) {
 		this.school = school;
-	}
-	public Assesment getAssesment() {
-		return assesment;
-	}
-	public void setAssesment(Assesment assesment) {
-		this.assesment = assesment;
 	}
 	public Integer getAvg() {
 		return avg;

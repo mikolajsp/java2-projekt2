@@ -52,14 +52,14 @@ function createDetailedSchoolDescription(school) {
     }
 
 
-function getComments(id){
-    var url = DOMAIN + "/comment/pid/" + id;
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", url, false);
-    xmlHttp.send(null);
-    var content = JSON.parse(xmlHttp.responseText);
-    return content;
-}
+// function getComments(id){
+//     var url = DOMAIN + "/comment/pid/" + id;
+//     var xmlHttp = new XMLHttpRequest();
+//     xmlHttp.open("GET", url, false);
+//     xmlHttp.send(null);
+//     var content = JSON.parse(xmlHttp.responseText);
+//     return content;
+// }
 
 function sendComment(){
     var content = document.getElementById("comment").value 
@@ -169,20 +169,6 @@ function putAvg(avg){
 }
 
 
-function main(){
-    var schoolid = getQueryVariable("schoolid");
-    console.log(schoolid);
-    var url = DOMAIN + "/school/id/" + schoolid;
-    var school = getschoolinfo(url);
-    console.log(school);
-    document.getElementById("info").innerHTML = createDetailedSchoolDescription(school.school);
-    var comments = getComments(schoolid);
-    createRadar(school.school.name, school.assesment,"myChart");
-    var avg = displayComments(comments.comments);
-    putAvg(avg);
-    
-}
-
 function launchModal(){
     $('#surveyModal').modal('show')
 }
@@ -235,4 +221,18 @@ function sendSurvey(){
         hideModal();
     }
    
+}
+
+function main(){
+    var schoolid = getQueryVariable("schoolid");
+    console.log(schoolid);
+    var url = DOMAIN + "/school/id/" + schoolid;
+    var response = getschoolinfo(url);
+    console.log(response);
+    document.getElementById("info").innerHTML = createDetailedSchoolDescription(response.school);
+    createRadar(response.school.name, response.school.assesment,"myChart");
+    displayComments(response.school.comments);
+    var avg = response.avg;
+    putAvg(avg);
+    
 }

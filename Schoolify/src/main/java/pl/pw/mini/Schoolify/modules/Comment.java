@@ -3,6 +3,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import java.time.LocalDate;
@@ -21,6 +23,10 @@ public class Comment {
 	private Integer upVotes;
 	private Integer downVotes;
 	private LocalDate date;
+	
+	@ManyToOne
+	@JoinColumn
+	private School school;
 	
 	public Comment() {
 		
@@ -101,5 +107,17 @@ public class Comment {
 
 	public void setSchoolId(Long schoolId) {
 		this.schoolId = schoolId;
+	}
+
+
+	
+	public School getSchool() {
+		return school;
+	}
+
+
+
+	public void setSchool(School school) {
+		this.school = school;
 	}
 }

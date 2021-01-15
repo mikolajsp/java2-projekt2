@@ -3,10 +3,8 @@ var distsGlobal = new Array;
 
 function getSchoolsToCompare(){
 	var param = window.location.search.substring(1);
-	console.log(param);
 	var ids = param.split("&");
 	var url = DOMAIN + "/school/ids/" + ids.join();
-	console.log(url);
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", url, false);
     xmlHttp.send(null);
@@ -66,7 +64,6 @@ function makeAvgRow(schools,n){
 	for(var i = 0; i < n; i++){
 		var nextCol = document.createElement("td");
 		nextCol.innerHTML = getNBlue(schools[i].avg);
-		console.log(schools[i].avg);
 		thisRow.appendChild(nextCol);
 	}
 }
@@ -81,8 +78,8 @@ function makeRadarRow(schools,n){
 		canvas.width = 300;
 		nextCol.appendChild(canvas);
 		canvas.id = `radar${i}`;
-		var s = schools[i];
-		createRadar(s.school.name,s.assesment,canvas.id);
+		var s = schools[i].school;
+		createRadar(s.name,s.assesment,canvas.id);
 		thisRow.appendChild(nextCol);
 	}
 }
@@ -139,6 +136,7 @@ function makeOpinionRow(schools,n){
 	for(var i = 0; i < n; i++){
 		var nextCol = document.createElement("td");
 		var s = schools[i];
+		console.log(s);
 		var str;
 		if(s.bestComment == null){
 			nextCol.innerHTML = "<br><p>Brak opinii.</p>";
@@ -154,6 +152,7 @@ function makeOpinionRow(schools,n){
 
 
 function makeCols(schools,n){
+	// console.log(schools);
 	var table = document.getElementById("comparision"); 
 	makeNameRow(schools,n);
 	makeMapRow(schools,n);
@@ -166,6 +165,6 @@ function makeCols(schools,n){
 
 function main(){
 	var response_cont = getSchoolsToCompare();
-	var columns_no = response_cont.length;
-	makeCols(response_cont,columns_no);
+	var columns_no = response_cont.schools.length;
+	makeCols(response_cont.schools,columns_no);
 }

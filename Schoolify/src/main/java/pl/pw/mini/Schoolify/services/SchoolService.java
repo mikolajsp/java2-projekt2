@@ -19,6 +19,7 @@ import pl.pw.mini.Schoolify.modules.Comment;
 import pl.pw.mini.Schoolify.modules.CommentResponseWrapper;
 import pl.pw.mini.Schoolify.modules.ContentCrossExaminer;
 import pl.pw.mini.Schoolify.modules.Localization;
+import pl.pw.mini.Schoolify.modules.MultipleSchoolResponseWrapper;
 import pl.pw.mini.Schoolify.modules.PositionFinder;
 import pl.pw.mini.Schoolify.modules.School;
 import pl.pw.mini.Schoolify.modules.SearchResponseWrapper;
@@ -86,18 +87,27 @@ public class SchoolService {
 		srw.setSchoolList(res);
 		}
 	
-	public List<SingleSchoolResponseWrapper> schoolsByIds(Iterable<Long> ids){
-		List<School> ls = sr.findAllById(ids);
-		List<SingleSchoolResponseWrapper> ssrwL = new ArrayList<>();
+	public MultipleSchoolResponseWrapper getMultipleSchoolResponse(List<School> ls) {
+		MultipleSchoolResponseWrapper res = new MultipleSchoolResponseWrapper();
 		for(School s: ls) {
 			SingleSchoolResponseWrapper ssrw = new SingleSchoolResponseWrapper();
 			ssrw.setSchool(s);
-			ssrw.setAssesment(getAssesmentBySchoolId(s.getId()));
-			ssrw.setAvg(avgRate(s.getId()));
-			ssrw.setBestComment(bestComment(s.getId()));
-			ssrwL.add(ssrw);
+			ssrw.setAvg(avgRate(s.getComments()));
+			ssrw.setBestComment(getBestComment(s.getComments()));
+			res.addSchool(ssrw);
 		}
-		return ssrwL;
+		return res;
+	}
+	
+	public MultipleSchoolResponseWrapper schoolsByIds(Iterable<Long> ids){
+		List<School> ls = sr.findAllById(ids);
+		return getMultipleSchoolResponse(ls);
+	}
+	
+	public MultipleSchoolResponseWrapper findByName(String name) {
+		List<School> sc = sr.findByName(name);
+		return getMultipleSchoolResponse(sc);
+		
 	}
 	
 	public void advancedFilter(Map<String,String> allFilters,SearchResponseWrapper srw){
@@ -136,23 +146,35 @@ public class SchoolService {
 		}
 				
 	}
+	
+	
+	public Comment getBestComment(List<Comment> coms) {
+		int max = -1;
+		Comment best = null;
+		for(Comment c: coms) {
+			int rate = c.getUpVotes() - c.getDownVotes();
+			if(rate > max) {
+				max = rate;
+				best = c;
+			}
+		}
+		return best;
+	}
 
-	public School findById(Long id) {
+	public SingleSchoolResponseWrapper findById(Long id) {
 		School s = sr.findById(id).orElse(null);
 		if(s != null) {
 			s.setPopularity(s.getPopularity()+1);
 			sr.save(s);
 		}
-		return s;
+		SingleSchoolResponseWrapper res = new SingleSchoolResponseWrapper();
+		res.setSchool(s);
+		res.setBestComment(getBestComment(s.getComments()));
+		res.setAvg(avgRate(s.getComments()));
+		return res;
 	}
-	public List<School> findByName(String name) {
-		List<School> sc = sr.findByName(name);
-		for(School s:sc) {
-			s.setPopularity(s.getPopularity()+1);
-		}
-		return sc;
-		
-	}
+	
+
 	
 	
 	public List<Comment> findCommentsById(Long id){
@@ -162,22 +184,12 @@ public class SchoolService {
 		return ar.findById(id).orElse(null);
 	}
 	
-	public Integer avgRate(Long id) {
-		List<Comment> lc = findCommentsById(id);
-		if(lc.size() == 0) {
+	public Integer avgRate(List<Comment> coms){
+		if(coms.size() == 0) {
 			return 0;
 		}
-		Integer sum = lc.stream().map(c->c.getRate()).reduce(0, Integer::sum)/lc.size();
+		Integer sum = coms.stream().map(c->c.getRate()).reduce(0, Integer::sum)/coms.size();
 		return sum;
-	}
-	public Comment bestComment(Long id) {
-		List<Comment> lc = findCommentsById(id);
-		if(lc.size() == 0) {
-			return null;
-		}
-        Comment bc =  Collections.max(lc, Comparator.comparing(s -> s.getUpVotes() - s.getDownVotes()));
-        return bc;
-
 	}
 	
 	

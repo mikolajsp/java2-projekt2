@@ -1,10 +1,18 @@
 package pl.pw.mini.Schoolify.modules;
 
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -24,11 +32,25 @@ public class School{
 	@JsonUnwrapped
 	private Contact contact;
 	
-
+	@OneToMany(mappedBy="schoolId")
+	private List<Comment> comments;
+	
+	@OneToOne
+	@JoinColumn(name="id")
+	private Assesment assesment;
+	
 	@Embedded
 	@JsonUnwrapped
 	private Localization localization;
 	
+	public Assesment getAssesment() {
+		return assesment;
+	}
+	public void setAssesment(Assesment assesment) {
+		this.assesment = assesment;
+	}
+
+
 	private Integer students;
 	private Integer branches;
 	
@@ -106,6 +128,16 @@ public class School{
 	}
 	public void setPopularity(Integer popularity) {
 		this.popularity = popularity;
+	}
+	
+	
+	public List<Comment> getComments() {
+		return comments;
+	}
+	
+	
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 	
 	
