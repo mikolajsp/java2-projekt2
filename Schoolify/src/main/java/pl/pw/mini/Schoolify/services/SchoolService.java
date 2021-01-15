@@ -285,24 +285,6 @@ public class SchoolService {
 		  return sum;
 	}
 	
-	
-	public Double calculateDistance(Double lat1,Double lon1,Double lat2,Double lon2) {
-		int R = 6370000; // earth radius
-		double pom = Math.PI/180;
-		double ph1 = lat1 * pom ;
-		double ph2 = lat2 * pom;
-		double deltaphi = (lat2 - lat1) * pom;
-		double deltalambda = (lon2-lon1) * pom;
-		double a = Math.sin(deltaphi/2) * Math.sin(deltaphi/2) +
-		          Math.cos(ph1) * Math.cos(ph2) *
-		          Math.sin(deltalambda/2) * Math.sin(deltalambda/2);
-		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-		return  R * c;
-	}
-	
-	
-	
-	
 	public void filterOutliers(SearchResponseWrapper x) {
 		List<School> res = x.getSchoolList();
 		List<Double> lon = res.stream().map(School::getLocalization).
@@ -347,45 +329,10 @@ public class SchoolService {
 		return positionCenter;	
 		}
 	
-	public Double[] extremsLonLat(List<School> fSchools) {
-		Double res[] = {54.0, 49.0, 24.0, 14.0}; // min lat max lat min lon max lon for PL (swapped accordingly to perform min max) 
-		for(School s : fSchools){
-			Localization l = s.getLocalization();
-			Double lon = l.getLon();
-			Double lat = l.getLat();
-			if(lat < res[0]) {
-				res[0] = lat;
-			}
-			if(lat > res[1]){
-				res[1] = lat;
-			}
-			if(lon < res[2]) {
-				res[2] = lon;
-			}
-			if(lon > res[3]) {
-				res[3] = lon;			
-			}
-		}
-		return res;
-	}
 	public void setCenterUtil(SearchResponseWrapper srw){
 		Double[] center = calculateCenter(srw.getSchoolList());
 		srw.setX_center(center[0]);
 		srw.setY_center(center[1]);
-	}
-	public void setCoordsExtreme(SearchResponseWrapper srw) {
-		if(srw.getSchoolList().size() == 0) {
-			srw.setMinLat(49.0);
-			srw.setMaxLat(54.0);
-			srw.setMinLon(14.0);
-			srw.setMaxLon(24.0);
-		}else {
-			Double[] extrems = extremsLonLat(srw.getSchoolList());
-			srw.setMinLat(extrems[0]);
-			srw.setMaxLat(extrems[1]);
-			srw.setMinLon(extrems[2]);
-			srw.setMaxLon(extrems[3]);
-		}
 	}
 		
 	public SearchResponseWrapper search(Map<String, String> allFilters){
@@ -399,7 +346,6 @@ public class SchoolService {
 		}
 		filterOutliers(srw);
 		setCenterUtil(srw);
-		setCoordsExtreme(srw);
 		setMostPopular(srw,10);
 		return srw;
 	}
