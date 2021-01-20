@@ -19,10 +19,10 @@ function createRequestURI() {
     var town = document.getElementById("itown").value;
     var name = document.getElementById("iname").value;
     var type = document.getElementById("itype").value;
-    var studlower = document.getElementById("studlower").value;
-    var studupper = document.getElementById("studupper").value;
-    var branlower = document.getElementById("branlower").value;
-    var branupper = document.getElementById("branupper").value;
+    // var studlower = document.getElementById("studlower").value;
+    // var studupper = document.getElementById("studupper").value;
+    // var branlower = document.getElementById("branlower").value;
+    // var branupper = document.getElementById("branupper").value;
     var voivodeship = document.getElementById("voivodeship").value;
     var county = document.getElementById("county").value;
     var community = document.getElementById("community").value;
@@ -49,20 +49,20 @@ function createRequestURI() {
             base += key + "=" + value + "&";
         }
     }
-    if (studlower || studupper) {
-        var key1 = encodeURIComponent("studlower");
-        var value1 = encodeURIComponent(studlower);
-        var key2 = encodeURIComponent("studupper");
-        var value2 = encodeURIComponent(studupper);
-        base += key1 + "=" + value1 + "&" + key2 + "=" + value2 + "&";
-    }
-    if (branlower || branupper) {
-        var key1 = encodeURIComponent("branlower");
-        var value1 = encodeURIComponent(branlower);
-        var key2 = encodeURIComponent("branupper");
-        var value2 = encodeURIComponent(branupper);
-        base += key1 + "=" + value1 + "&" + key2 + "=" + value2 + "&";
-    }
+    // if (studlower || studupper) {
+    //     var key1 = encodeURIComponent("studlower");
+    //     var value1 = encodeURIComponent(studlower);
+    //     var key2 = encodeURIComponent("studupper");
+    //     var value2 = encodeURIComponent(studupper);
+    //     base += key1 + "=" + value1 + "&" + key2 + "=" + value2 + "&";
+    // }
+    // if (branlower || branupper) {
+    //     var key1 = encodeURIComponent("branlower");
+    //     var value1 = encodeURIComponent(branlower);
+    //     var key2 = encodeURIComponent("branupper");
+    //     var value2 = encodeURIComponent(branupper);
+    //     base += key1 + "=" + value1 + "&" + key2 + "=" + value2 + "&";
+    // }
     if (voivodeship) {
         if (voivodeship == "Dowolne") { }
         else {
@@ -143,16 +143,18 @@ function fillResponseDiv(schoolArray) {
     var intro = document.createElement('h4');
     intro.id = 0;
     intro.innerHTML = generateText();
-    document.getElementById("response").appendChild(intro);
+    resp = document.getElementById("response");
+    resp.appendChild(intro);
     var i = 1;
     for (var school in schoolArray) {
         var newElement = document.createElement('div');
         newElement.id = schoolArray[school].id;
         newElement.className = "school well";
         newElement.innerHTML = generateSchoolDivOnlyBasic(schoolArray[school],i);
-        document.getElementById("response").appendChild(newElement);
+        resp.appendChild(newElement);
         i++;
     }
+    resp.style.paddingTop = "50px";
 
 }
 

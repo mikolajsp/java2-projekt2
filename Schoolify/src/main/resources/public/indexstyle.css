@@ -12,7 +12,11 @@ body{
 
 .navbar .navbar-brand{
     margin-left: 15px;
+    margin-bottom: 0px;
   }
+.test{
+    padding-top: 50px;
+}
 
 .well {
     border: 0;
@@ -31,7 +35,6 @@ body{
     -webkit-transition: max-height 0.5s ease;
    
 }
-
 
 #mapid {
     height: 400px;

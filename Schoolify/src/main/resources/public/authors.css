@@ -1,0 +1,15 @@
+
+
+.container{
+	padding-top: 150px;
+}
+.photo{
+    width: 60%;
+    height: auto;
+    left: 0px;
+    right: 0px;
+}
+.navbar .navbar-brand{
+    margin-left: 15px;
+    margin-bottom: 0px;
+  }
