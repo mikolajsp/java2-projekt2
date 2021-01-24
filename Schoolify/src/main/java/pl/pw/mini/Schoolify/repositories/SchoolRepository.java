@@ -19,6 +19,4 @@ public interface SchoolRepository extends JpaRepository<School,Long>{
 	List<School> findByNameStartsWithAndTypeAndLocalizationTownStartsWith(String name, String type, String town);
 	List<School> findByTypeAndLocalizationTownStartsWith(String type, String town);
 	List<School> findByLocalizationTownStartsWith(String town);
-	
-	
 }
