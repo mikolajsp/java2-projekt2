@@ -42,12 +42,12 @@ public class PositionFinder {
 		jo = new JSONObject(rep);
 		JSONArray array = jo.getJSONArray("features");
 		String coor = array.getJSONObject(0).getJSONObject("geometry").get("coordinates").toString();
-		String coor2 = (String) coor.subSequence(1, coor.length()-2);
+		String coor2 = (String) coor.subSequence(1, coor.length() - 2);
 		String[] arr = coor2.split(",");
 		Double[] res = new Double[2];
 		res[0] = Double.parseDouble(arr[0]);
 		res[1] = Double.parseDouble(arr[1]);
 		return res;
-      }
-             
 	}
+
+}

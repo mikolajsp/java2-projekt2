@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import pl.pw.mini.Schoolify.modules.Comment;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long>{
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 	List<Comment> findBySchoolId(Long schoolId);
 
 }

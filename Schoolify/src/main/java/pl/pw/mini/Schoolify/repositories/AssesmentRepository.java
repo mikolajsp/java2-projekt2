@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import pl.pw.mini.Schoolify.modules.Assesment;
 
-public interface AssesmentRepository extends JpaRepository<Assesment,Long> {
+public interface AssesmentRepository extends JpaRepository<Assesment, Long> {
 
 }

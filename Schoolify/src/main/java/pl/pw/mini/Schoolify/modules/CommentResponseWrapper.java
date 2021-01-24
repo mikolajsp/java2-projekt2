@@ -1,5 +1,7 @@
 package pl.pw.mini.Schoolify.modules;
+
 import java.util.List;
+
 public class CommentResponseWrapper {
 	private List<Comment> comments;
 
@@ -10,5 +12,5 @@ public class CommentResponseWrapper {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
-	
+
 }

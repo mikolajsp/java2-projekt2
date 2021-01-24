@@ -13,9 +13,9 @@ public class MultipleSchoolResponseWrapper {
 	public void setSchools(List<SingleSchoolResponseWrapper> schools) {
 		this.schools = schools;
 	}
+
 	public void addSchool(SingleSchoolResponseWrapper s) {
 		this.schools.add(s);
 	}
 
-	
 }

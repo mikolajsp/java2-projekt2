@@ -13,17 +13,16 @@ import pl.pw.mini.Schoolify.modules.SearchResponseWrapper;
 import pl.pw.mini.Schoolify.services.SchoolService;
 
 @RestController
-public class SearchController{
-	
+public class SearchController {
+
 	@Autowired
 	SchoolService ss;
-	
+
 	@CrossOrigin
 	@GetMapping("/search")
-	public ResponseEntity<SearchResponseWrapper> search(@RequestParam Map<String,String> allFilters){
+	public ResponseEntity<SearchResponseWrapper> search(@RequestParam Map<String, String> allFilters) {
 		SearchResponseWrapper srw = ss.search(allFilters);
 		return ResponseEntity.ok(srw);
 	}
 
-	
 }

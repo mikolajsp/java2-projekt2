@@ -1,6 +1,5 @@
 package pl.pw.mini.Schoolify.controllers;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +17,12 @@ import pl.pw.mini.Schoolify.modules.MultipleSchoolResponseWrapper;
 import pl.pw.mini.Schoolify.modules.School;
 import pl.pw.mini.Schoolify.modules.SingleSchoolResponseWrapper;
 import pl.pw.mini.Schoolify.services.SchoolService;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/school")
 public class SchoolController {
-	
+
 	@Autowired
 	SchoolService ss;
 
@@ -31,20 +31,22 @@ public class SchoolController {
 		SingleSchoolResponseWrapper sch = ss.findById(id);
 		return ResponseEntity.ok(sch);
 	}
+
 	@GetMapping("/ids/{schoolIDS}")
-	public ResponseEntity<MultipleSchoolResponseWrapper> schoolsByIds(@PathVariable List<Long> schoolIDS){
+	public ResponseEntity<MultipleSchoolResponseWrapper> schoolsByIds(@PathVariable List<Long> schoolIDS) {
 		MultipleSchoolResponseWrapper msrw = ss.schoolsByIds(schoolIDS);
 		return ResponseEntity.ok(msrw);
 	}
+
 	@GetMapping("name/{name}")
 	public ResponseEntity<MultipleSchoolResponseWrapper> schoolByName(@PathVariable("name") String name) {
 		MultipleSchoolResponseWrapper sch = ss.findByName(name);
 		return ResponseEntity.ok(sch);
 	}
+
 	@PostMapping("/survey")
-	public void survey(@RequestParam Long id, @RequestParam Map<String,String> allFilters) {
-		ss.newVoteSurvey(id,allFilters);
+	public void survey(@RequestParam Long id, @RequestParam Map<String, String> allFilters) {
+		ss.newVoteSurvey(id, allFilters);
 	}
-	
-		
+
 }

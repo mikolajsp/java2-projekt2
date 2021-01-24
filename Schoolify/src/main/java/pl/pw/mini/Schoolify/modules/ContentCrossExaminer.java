@@ -8,53 +8,54 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ContentCrossExaminer {
-	
-	public HashMap<Integer,List<String>> bad_words;
-		
-	public void badWords(){
-		if(bad_words != null) {
+
+	public HashMap<Integer, List<String>> bad_words;
+
+	public void badWords() {
+		if (bad_words != null) {
 			return;
-		}else {
+		} else {
 			bad_words = new HashMap<>();
-		BufferedReader objReader = null;
-		  try {
-		   String strCurrentLine;
-		   objReader = new BufferedReader(new FileReader("badwords"));
+			BufferedReader objReader = null;
+			try {
+				String strCurrentLine;
+				objReader = new BufferedReader(new FileReader("badwords"));
 
-		   while ((strCurrentLine = objReader.readLine()) != null) {
-			   String newString = strCurrentLine.replaceAll("[,']","");
-			   String[] badLine = newString.split(" ");
-			   for(String s:badLine){
-				   if(!bad_words.containsKey(s.length())) {
-					   List<String> newel = new ArrayList<String>();
-					   newel.add(s);
-					   bad_words.put(s.length(),newel);
-				   }else {
-					   List<String> vals = bad_words.get(s.length());
-					   vals.add(s);
-					   bad_words.put(s.length(), vals);
-				   }			   }
-		   }
+				while ((strCurrentLine = objReader.readLine()) != null) {
+					String newString = strCurrentLine.replaceAll("[,']", "");
+					String[] badLine = newString.split(" ");
+					for (String s : badLine) {
+						if (!bad_words.containsKey(s.length())) {
+							List<String> newel = new ArrayList<String>();
+							newel.add(s);
+							bad_words.put(s.length(), newel);
+						} else {
+							List<String> vals = bad_words.get(s.length());
+							vals.add(s);
+							bad_words.put(s.length(), vals);
+						}
+					}
+				}
 
-		  } catch (IOException e) {
+			} catch (IOException e) {
 
-		   e.printStackTrace();
+				e.printStackTrace();
 
+			}
 		}
-	}		
-}
+	}
+
 	public boolean checkBadWords(String input) {
 		String[] values = input.replaceAll("^[.,\\s]+", "").split("[.,\\s]+");
 		badWords();
-		for(String s:values) {
-			if(bad_words.containsKey(s.length())){
-				if(bad_words.get(s.length()).contains(s.toLowerCase())){
+		for (String s : values) {
+			if (bad_words.containsKey(s.length())) {
+				if (bad_words.get(s.length()).contains(s.toLowerCase())) {
 					return false;
 				}
 			}
 		}
 		return true;
 	}
-	
-	
+
 }
