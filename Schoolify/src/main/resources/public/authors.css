@@ -1,19 +1,19 @@
-
-
-.container{
-	padding-top: 150px;
+.container {
+    padding-top: 150px;
 }
-.photo{
+
+.photo {
     width: 60%;
     height: auto;
     left: 0px;
     right: 0px;
 }
-.navbar .navbar-brand{
+
+.navbar .navbar-brand {
     margin-left: 15px;
     margin-bottom: 0px;
-  }
+}
 
- a{
-    text-decoration:none;
+a {
+    text-decoration: none;
 }

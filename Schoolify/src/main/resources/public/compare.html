@@ -4,22 +4,17 @@
 <head>
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="compare.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <title>Schoolify</title>
 </head>
 
 <body onload="main()">
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 
     <nav class="navbar navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="http://localhost:8080/index.html">Schoolify</a>
@@ -27,38 +22,36 @@
 
 
     <div id="container" class="container bootstrap">
-           <table class="center">
-                      <thead class="thead-light">
-                      </thead>
-                      <tbody>
-                        <tr id="nameRow">
-                            <th scope="row">Nazwa</th>
-                        </tr>
-                        <tr id="positionRow" height="200px">
-                            <th scope="row">Położenie</th>
-                        </tr>
-                        <tr id="avgRow">
-                            <th  scope="row">Średnia ocena</th>
-                        </tr>
-                           <tr id="radarRow" height="300px">
-                            <th scope="row">Radar</th>
-                        </tr>
-                           <tr id="distanceRow">
-                            <th scope="row">Odległość od Ciebie [km]</th>
-                        </tr>
-                            <tr id="bestCommentRow">
-                                <th scope="row">Najpopularniejsza opinia</th>
-                            </tr>
-                      </tbody>
-            </table>
-      </div>
+        <table class="center">
+            <thead class="thead-light">
+            </thead>
+            <tbody>
+                <tr id="nameRow">
+                    <th scope="row">Nazwa</th>
+                </tr>
+                <tr id="positionRow" height="200px">
+                    <th scope="row">Położenie</th>
+                </tr>
+                <tr id="avgRow">
+                    <th scope="row">Średnia ocena</th>
+                </tr>
+                <tr id="radarRow" height="300px">
+                    <th scope="row">Radar</th>
+                </tr>
+                <tr id="distanceRow">
+                    <th scope="row">Odległość od Ciebie [km]</th>
+                </tr>
+                <tr id="bestCommentRow">
+                    <th scope="row">Najpopularniejsza opinia</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 
     <script src="compare.js"></script>
     <script src="logic.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
 </body>
 

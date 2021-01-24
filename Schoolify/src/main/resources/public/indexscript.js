@@ -1,4 +1,3 @@
-
 var DOMAIN = "http://localhost:8080";
 
 
@@ -42,8 +41,7 @@ function createRequestURI() {
         base += key + "=" + value + "&";
     }
     if (type) {
-        if (type == "Dowolna") { }
-        else {
+        if (type == "Dowolna") {} else {
             var key = encodeURIComponent("type");
             var value = encodeURIComponent(type);
             base += key + "=" + value + "&";
@@ -64,8 +62,7 @@ function createRequestURI() {
     //     base += key1 + "=" + value1 + "&" + key2 + "=" + value2 + "&";
     // }
     if (voivodeship) {
-        if (voivodeship == "Dowolne") { }
-        else {
+        if (voivodeship == "Dowolne") {} else {
             var key = encodeURIComponent("voivodeship");
             var value = encodeURIComponent(voivodeship);
             base += key + "=" + value + "&";
@@ -119,7 +116,7 @@ function createSchoolDescription(school) {
 
 
 
-function showGreen(id){
+function showGreen(id) {
     var toCompare = document.getElementById(`buttonCompare${id}`);
     var greenShow = document.createElement("img");
     greenShow.src = "greenTick.png";
@@ -131,11 +128,11 @@ function showGreen(id){
 }
 
 function createSchoolDescriptionBasic(school) {
-    return 
-        "Nazwa: " + school.name + "<br>" +
-        "<a href =\"schoolpage.html?schoolid="+ school.id + "\">Więcej >> </a>" ;
+    return "Nazwa: " + school.name + "<br>" +
+        "<a href =\"schoolpage.html?schoolid=" + school.id + "\">Więcej >> </a>";
 }
-function generateText(){
+
+function generateText() {
     return "Najbardziej popularne wśród użykowników";
 }
 
@@ -150,7 +147,7 @@ function fillResponseDiv(schoolArray) {
         var newElement = document.createElement('div');
         newElement.id = schoolArray[school].id;
         newElement.className = "school well";
-        newElement.innerHTML = generateSchoolDivOnlyBasic(schoolArray[school],i);
+        newElement.innerHTML = generateSchoolDivOnlyBasic(schoolArray[school], i);
         resp.appendChild(newElement);
         i++;
     }
@@ -159,7 +156,7 @@ function fillResponseDiv(schoolArray) {
 }
 
 
-function makeMore(id){
+function makeMore(id) {
     var more = document.createElement("a");
     more.classList.add("btn");
     more.classList.add("btn-outline-primary");
@@ -169,14 +166,14 @@ function makeMore(id){
     return more;
 }
 
-function makeComp(id){
+function makeComp(id) {
     var comp = document.createElement("button");
     comp.classList.add("compareButton");
     comp.classList.add("btn");
     comp.classList.add("btn-outline-primary");
     comp.classList.add("btn-md");
     comp.id = `buttonCompare${id}`;
-    comp.addEventListener('click', function(){
+    comp.addEventListener('click', function() {
         showGreen(id);
     });
     comp.onclick = "showGreen(this.id)";
@@ -196,35 +193,35 @@ function placeMarkersOnMap(content) {
         popupDIV.appendChild(makeComp(element.id));
         marker.bindPopup(popupDIV);
     });
-    }
+}
 
 
 
 
 
-function generateSchoolDiv(school){
-return       "<div class=\"row\">"+
-                        "<div class=\"col-xs-6 col-sm-9 col-md-9 col-lg-10 title\">" +
-                            "<h3>" + school.name  + "</h3>" +
-                            "<p>"+createSchoolDescription(school)+ "</p>"+
-                        "</div>"+
-                "</div>";
+function generateSchoolDiv(school) {
+    return "<div class=\"row\">" +
+        "<div class=\"col-xs-6 col-sm-9 col-md-9 col-lg-10 title\">" +
+        "<h3>" + school.name + "</h3>" +
+        "<p>" + createSchoolDescription(school) + "</p>" +
+        "</div>" +
+        "</div>";
 
 }
 
-function generateSchoolDivOnlyBasic(school,i){
-return       "<div class=\"row\">"+
-                        "<div class=\"col-xs-6 col-sm-9 col-md-9 col-lg-10 title\">" +
-                            "<p style=\"font-size:18px;\">"+ "<a href =\"schoolpage.html?schoolid="+ school.id + "\">"+ i + ". " + school.name + "</a>"  + "</p>"+
-                        "</div>"+
-                "</div>";
+function generateSchoolDivOnlyBasic(school, i) {
+    return "<div class=\"row\">" +
+        "<div class=\"col-xs-6 col-sm-9 col-md-9 col-lg-10 title\">" +
+        "<p style=\"font-size:18px;\">" + "<a href =\"schoolpage.html?schoolid=" + school.id + "\">" + i + ". " + school.name + "</a>" + "</p>" +
+        "</div>" +
+        "</div>";
 
 }
 
-function linkCompare(){
+function linkCompare() {
     var b = document.getElementById("goCompare");
     var str = "";
-    for(var i = 0; i < COMPARE.length; i++){
+    for (var i = 0; i < COMPARE.length; i++) {
         str += COMPARE[i] + ",";
     }
     b.href = "compare.html?" + str;
@@ -234,27 +231,27 @@ function linkCompare(){
 
 
 
-function changeCenter(schoolResponse){
+function changeCenter(schoolResponse) {
     var centerlat = schoolResponse.x_center;
     var centerlon = schoolResponse.y_center;
-    mymap.setView([centerlat,centerlon],8);
+    mymap.setView([centerlat, centerlon], 8);
 }
 
-function setHome(cont){
-        var redTag = new L.Icon({
-          iconUrl: 'marker-icon-red.png'
-    }
-    );
+function setHome(cont) {
+    var redTag = new L.Icon({
+        iconUrl: 'marker-icon-red.png'
+    });
 
     var m = L.marker([content.originX, content.originY], {
         icon: redTag,
-         iconSize: [32, 32],
-        iconAnchor: [16,32]
+        iconSize: [32, 32],
+        iconAnchor: [16, 32]
     }).addTo(markers)
-        var ad = content.address;
-        m.bindPopup(ad);
+    var ad = content.address;
+    m.bindPopup(ad);
     mymap.addLayer(markers);
 }
+
 function execute() {
     document.getElementById("response").innerHTML = "";
     markers.clearLayers();
@@ -262,10 +259,9 @@ function execute() {
     changeCenter(content);
     fillResponseDiv(content.mostPopular);
     placeMarkersOnMap(content);
-    if(content.originX){
+    if (content.originX) {
         setHome(content);
     }
     mymap.addLayer(markers);
 
 }
-

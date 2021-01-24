@@ -3,12 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="indexstyle.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-        crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
 
     <title>Schoolify</title>
 
@@ -16,23 +13,21 @@
 
 <body>
 
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-        crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href=""> <img src="logo3.png" width="40" height="40" alt=""></a>
-         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-        	<a class="nav-link" href="#">Home <span class="sr-only"></span></a>
-  		  </li>
-  		  <li class="nav-item active">
-        	<a class="nav-link" href="#">O Schoolify<span class="sr-only"></span></a>
-  		  </li>
-  		  <li class="nav-item active">
-        	<a class="nav-link" href="authors.html">Autorzy <span class="sr-only"></span></a>
-  		  </li>
-		</ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">O Schoolify<span class="sr-only"></span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="authors.html">Autorzy <span class="sr-only"></span></a>
+            </li>
+        </ul>
     </nav>
 
     <div class="container bootstrap">
@@ -114,7 +109,7 @@
                             <input class="form-control" type="text" id="iname" placeholder="Podaj nazwę szkoły">
                         </div>
                     </div>
-              <!--       <div class="form-group row">
+                    <!--       <div class="form-group row">
                         <div>Liczba uczniów</div>
                         <div class="col-md-6 mb-3">
                             <input class="form-control" type="number" id="studlower" placeholder="od">
@@ -175,43 +170,40 @@
                     </div>
                     <hr class="mb-4">
                     <!-- <div class="form-group row"> -->
-                    <button type="button" class="col-md-12 btn btn-primary btn-lg btn-block mb-4"
-                        onclick="execute();">Wyszukaj <img src="search.png" width="25" height="25"></img></button>
+                    <button type="button" class="col-md-12 btn btn-primary btn-lg btn-block mb-4" onclick="execute();">Wyszukaj <img src="search.png" width="25" height="25"></img></button>
                     <!-- </div> -->
                 </form>
                 <div class="col-md-10 mb-3">
-                <div id="mapcontainer" class="row mb-4">
-                    <div class="col-md-2"></div>
-                    <div id="mapid" class="col-md-8"></div>
-                    <div class="col-md-2"></div>
-                </div>
-                <button class="btn btn-outline-secondary btn-md" onclick="linkCompare();">
-                    <a id="goCompare" href="#link">Przejdź do porównania 
-                        <img src="comp.png" width="25" height="25"></img>
-                    </a> 
-                </button>
-                
+                    <div id="mapcontainer" class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <div id="mapid" class="col-md-8"></div>
+                        <div class="col-md-2"></div>
+                    </div>
+                    <button class="btn btn-outline-secondary btn-md" onclick="linkCompare();">
+                        <a id="goCompare" href="#link">Przejdź do porównania
+                            <img src="comp.png" width="25" height="25"></img>
+                        </a>
+                    </button>
+
                 </div>
             </div>
-            
+
             <div class="col-md-4" id="response">
             </div>
         </div>
     </div>
     <script src="indexscript.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous"></script>
-    <script src= 'https://code.jquery.com/jquery-3.4.1.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
     <script>
-        $('#goCompare').click(function(){
-        var schoolToCompare = document.getElementsByClassName('active');
-        console.log(schoolToCompare);
-        var str = "";
-        for(var i = 0; i < schoolToCompare.length; i++){
-            str += schoolToCompare[i].id.slice(13) + "&";
-        }
-        $(this).attr("href", "compare.html?" + str);
+        $('#goCompare').click(function() {
+            var schoolToCompare = document.getElementsByClassName('active');
+            console.log(schoolToCompare);
+            var str = "";
+            for (var i = 0; i < schoolToCompare.length; i++) {
+                str += schoolToCompare[i].id.slice(13) + "&";
+            }
+            $(this).attr("href", "compare.html?" + str);
         });
     </script>
 
