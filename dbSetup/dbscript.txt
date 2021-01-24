@@ -26,8 +26,8 @@ popularity INTEGER DEFAULT 0
 LOAD DATA LOCAL INFILE "<<PATH TO CSV>>"
 INTO TABLE schools
 FIELDS TERMINATED BY ','
-ENCLOSED BY '"' LINES // chyba tego nie trzeba, mi dziala tylko bez
-TERMINATED BY '\n'; // chyba tego nie trzeba, mi dziala tylko bez
+ENCLOSED BY '"' LINES 
+TERMINATED BY '\n'; 
 
 
 CREATE TABLE comments (
@@ -40,7 +40,6 @@ upVotes INT DEFAULT 0,
 downVotes INT DEFAULT 0,
 date DATETIME
 );
-
 
 
 
